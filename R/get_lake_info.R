@@ -1,4 +1,30 @@
-
+#' Get a summary of available information about a lake or lakes from the
+#' UK CEH Lakes Portal
+#'
+#' @param ... A lake id number or series of lake id numbers to be searched.
+#' Individual values should be separated by commas. R-type sequences can also
+#' be passed in e.g. 34:48, or alternatively a vector of values or df column.
+#' See examples.
+#'
+#' @return A data frame containing the available information about the specified
+#' lake or lakes. The 'Biology' information on the Lakes Portal webpages is not
+#' included, but all other information is provided. For details of the
+#' information provided, see the UK CEH Lake Portal website
+#' (\url{https://uklakes.ceh.ac.uk/}.)
+#'
+#' @export get_lake_info
+#'
+#' @examples
+#' # get information for Loch Katrine and Loch Lomond
+#' get_lake_info(24447, 24531)
+#'
+#' # get lake information for a set of lakes including a sequence
+#' get_lake_info(4, 5, 6, 34:37)
+#'
+#' # can also pass in the lakeid column from the output of search_names
+#' tarn_list <- search_names("Tarn")
+#' get_lake_info(tarn_list$lakeid)
+#'
 get_lake_info <- function(...) {
 
   # capture arguments as a list
@@ -28,7 +54,7 @@ get_lake_info <- function(...) {
 
     # scrape page source
     lake_page <- polite::scrape(session, query=list(wbid=lakes[i]), verbose=FALSE)
-    lake_page <- polite::scrape(session, query=list(wbid=24447), verbose=FALSE)
+    #lake_page <- polite::scrape(session, query=list(wbid=24447), verbose=FALSE)
 
     # extract waterbody name
     wb_name <- rvest::html_text2(rvest::html_element(lake_page, "h1"))
@@ -39,42 +65,43 @@ get_lake_info <- function(...) {
     # extract all tables for reference
     all_tables <- rvest::html_table(lake_page)
 
-    # extract classif table
-    classif <- all_tables[3]
+    # extract typology table
+    typology <- all_tables[3]
 
-    # delete classif table from rest of list
+    # delete typology table from rest of list
     all_tables[3] <- NULL
 
-    # bind rest of tables and remove units
-    combined_tables <- dplyr::bind_rows(all_tables)
+    # check for marl water body information in the chemistry information
+    chemistry <- dplyr::bind_rows(all_tables[3])
+    all_tables[3] <- NULL
+
+
+    # if there is chemistry information then check for marl lakes
+    if(nrow(chemistry)>0){
+      chemistry$X2[grepl("Marl water", chemistry$X1, ignore.case = TRUE)] <- "TRUE"
+      # bind chemistry with the rest of tables and remove units
+      combined_tables <- dplyr::bind_rows(all_tables, chemistry)
+    }
+
+    # remove units from columns
     combined_tables$X2 <- sub(" .*", "", combined_tables$X2)
 
-    # now add classification info back on
-    combined_tables <- dplyr::bind_rows(combined_tables, classif)
+    # now add typology info back on
+    combined_tables <- dplyr::bind_rows(combined_tables, typology)
 
     # remove extra columns if biology table is present
     if (ncol(combined_tables)>2){
       combined_tables <- combined_tables[1:2]
     }
-#
-
-    # might have to add _ to some before doing this
-    #combined_tables$X1 <- sub("^(.*)\\s+[^\\s]+$", "\\1", combined_tables$X1)  # Remove everything after the last space
-    #combined_tables$X1 <- gsub("\\s+", "_", combined_tables$X1)
-    # remove trailing [?] parts from values
-    #combined_tables$X1 <- sub("\\[.*", "", combined_tables$X1)
-
-    # these were original and other way around - then just remove trailing _
 
     # remove trailing [?] parts from values
     combined_tables$X1 <- sub("\\[.*", "", combined_tables$X1)
 
+    # trim any non letters from the end of the strings
+    combined_tables$X1 <- sub("[^a-zA-Z]+$", "", combined_tables$X1)
 
     # remove spaces from variable names to make it easier
     combined_tables$X1 <- gsub(" ", "_", combined_tables$X1)
-
-
-    #combined_tables
 
     # if not NI lake, then derive Eastings and Northings and add to info
     if (lakes[i] < 50000){

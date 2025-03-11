@@ -8,23 +8,32 @@ UK CEH Lakes Portal}
 get_lake_info(...)
 }
 \arguments{
-\item{...}{A series of lake id numbers to searched. Can use ranges etc.
+\item{...}{A lake id number or series of lake id numbers to be searched.
+Individual values should be separated by commas. R-type sequences can also
+be passed in e.g. 34:48, or alternatively a vector of values or df column.
+See examples.
 #'}
 }
 \value{
 A data frame containing the available information about the specified
 lake or lakes. The 'Biology' information on the Lakes Portal webpages is not
-included, but all other information is provided.
+included, but all other information is provided. For details of the
+information provided, see the UK CEH Lake Portal website
+(\url{https://uklakes.ceh.ac.uk/}.)
 }
 \description{
-Produces a summary of available information about a lake or
-lakes from the UK CEH Lakes Portal by responsibly webscraping lake
-information pages.
-#
+Get a summary of available information about a lake or lakes from the
+UK CEH Lakes Portal
 }
 \examples{
 # get information for Loch Katrine and Loch Lomond
-get_lake_info (24447, 24531)
+get_lake_info(24447, 24531)
 
-# can also
+# get lake information for a set of lakes including a sequence
+get_lake_info(4, 5, 6, 34:37)
+
+# can also pass in the lakeid column from the output of search_names
+tarn_list <- search_names("Tarn")
+get_lake_info(tarn_list$lakeid)
+
 }
