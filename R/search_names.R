@@ -11,13 +11,13 @@
 #' @return A data frame containing the details (Name & lakeid) of all the sites
 #' that match the search string (full or partial matches).
 #'
-#' @export search_names
+#' @export search_lakes
 #'
 #' @examples
 #' # search for sites containing "Tarn" in the name
-#' search_names(string="Tarn")
+#' search_lakes("Tarn")
 #'
-search_names <- function(string = NULL) {
+search_lakes <- function(string = NULL) {
   # extract list of rows that match search string
   matching_rows <- lake_ids[grep(string, lake_ids$Name), ]
   if (nrow(matching_rows) == 0) {

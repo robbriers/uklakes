@@ -1,21 +1,18 @@
 Package: uklakes
-Title: What the Package Does (One Line, Title Case)
+Title: Retrieves Lake Information from UK CEH Lakes Portal
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+    person("Rob", "Briers", , "r.briers@napier.ac.uk", role = c("aut", "cre"))
+Description: Retrieves a summary of the lake information from the UK CEH Lake Portal for a lake or series of lakes, based on the lakeid. Can also search for lakeid values based on strings in the lake name. For details of the information available, see the Lakes Portal Website (\url{https://uklakes.ceh.ac.uk/}.)
+License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Depends: 
     R (>= 3.5)
-LazyData: true
 Imports: 
     dplyr,
     polite,
     rnrfa,
     rvest,
-    tidyr,
-    xml2
+    tidyr

@@ -1,6 +1,11 @@
 #' Get a summary of available information about a lake or lakes from the
 #' UK CEH Lakes Portal
 #'
+#' @description
+#' Produces a summary of available information about a lake or
+#' lakes from the UK CEH Lakes Portal by responsibly webscraping lake
+#' information pages.
+#'
 #' @param ... A lake id number or series of lake id numbers to be searched.
 #' Individual values should be separated by commas. R-type sequences can also
 #' be passed in e.g. 34:48, or alternatively a vector of values or df column.
@@ -21,9 +26,10 @@
 #' # get lake information for a set of lakes including a sequence
 #' get_lake_info(4, 5, 6, 34:37)
 #'
-#' # can also pass in the lakeid column from the output of search_names
-#' tarn_list <- search_names("Tarn")
-#' get_lake_info(tarn_list$lakeid)
+#' # can also pass in the lakeid column from the output of search_lakes
+#' tarn_list <- search_lakes("Tarn")
+#' # just retrieve the first 5 lakes
+#' get_lake_info(tarn_list$lakeid[1:5])
 #'
 get_lake_info <- function(...) {
 
@@ -54,7 +60,6 @@ get_lake_info <- function(...) {
 
     # scrape page source
     lake_page <- polite::scrape(session, query=list(wbid=lakes[i]), verbose=FALSE)
-    #lake_page <- polite::scrape(session, query=list(wbid=24447), verbose=FALSE)
 
     # extract waterbody name
     wb_name <- rvest::html_text2(rvest::html_element(lake_page, "h1"))
@@ -75,12 +80,13 @@ get_lake_info <- function(...) {
     chemistry <- dplyr::bind_rows(all_tables[3])
     all_tables[3] <- NULL
 
-
     # if there is chemistry information then check for marl lakes
     if(nrow(chemistry)>0){
       chemistry$X2[grepl("Marl water", chemistry$X1, ignore.case = TRUE)] <- "TRUE"
       # bind chemistry with the rest of tables and remove units
       combined_tables <- dplyr::bind_rows(all_tables, chemistry)
+    } else{
+      combined_tables <- dplyr::bind_rows(all_tables)
     }
 
     # remove units from columns
@@ -139,46 +145,29 @@ get_lake_info <- function(...) {
   names(output_df) <- c("parameter", "value", "Lakeid")
 
   # reshape data to wide format
-  wide_table <- tidyr::pivot_wider(output_df, names_from = parameter, values_from = value, id_cols=Lakeid)
+  wide_table <- as.data.frame(tidyr::pivot_wider(output_df, names_from = parameter, values_from = value, id_cols=Lakeid))
 
-  # reorder variables to something more sensible
-#  wide_table <- wide_table[, c("Lakeid", "Name", setdiff(names(wide_table), c("Lakeid", "Name")))]
+  # if marl lake status is present then add to columns on left of table
+  if ("Marl_water_body" %in% colnames(wide_table)){
+    left_cols <- c("Lakeid", "Name", "Grid_reference", "Easting", "Northing", "Elevation_type", "Size_type", "Depth_type", "Geology_type", "Humic_type", "Marl_water_body")
+  } else {
+    # alternative set if it is not present
+    left_cols <- c("Lakeid", "Name", "Grid_reference", "Easting", "Northing", "Elevation_type", "Size_type", "Depth_type", "Geology_type", "Humic_type")
+  }
 
-  #str(test_info)
+  # define the remaining numeric columns
+  right_cols <- setdiff(names(wide_table), left_cols)
 
-  # Reorder column by name manually
-  #new_order = c("emp_id","name","superior_emp_id","dept_id","dept_branch_id")
-  #df2 <- df[, new_order]
+  # reorder the columns
+  wide_table <- wide_table[, c(left_cols, right_cols)]
 
-
-#  wide_table <- wide_table[, c("Lakeid", "Name", "Grid_reference",
-#                               "Elevation_type", "Size_type", "Depth_type",
-#                               "Geology_type", "Humic_type",
-#                               setdiff(names(wide_table), c("Lakeid", "Name",
-#                                                            "Grid_reference",
-#                                                            "Elevation_type",
-#                                                            "Size_type",
-#                                                            "Depth_type",
-#                                                            "Geology_type",
- #                                                           "Humic_type")))]
-
-
-  # change variable types in table
-#  wide_table$lakeid <- as.integer(wide_table$lakeid)
-#  wide_table[]
-#  wide_table <- across(wide_table)
-#  mutate_at(2:3, ~ as.numeric(.))
-
-  # columns to shift to the left
- # cols_to_left <- c("Lakeid", "Name", "Grid_reference", "Elevation_type", "Size_type", "Depth_type", "Geology_type", "Humic_type")
-
-#  wide_table <- wide_table[, c(cols_to_left, setdiff(names(wide_table), cols_to_left))]
-
-
-  # STILL TO DO ------------------------------------------------
-  # convert appropriate columns to numeric and reorder columns
-  # move name, GR and typology columns to left and then convert the rest
-  # ------------------------------------------------------------
+  # convert data types, first numeric
+  wide_table[c("Lakeid", "Easting", "Northing", right_cols)] <- lapply(wide_table[c("Lakeid", "Easting", "Northing", right_cols)], as.numeric)
+  # then marl to a boolean if present
+  if ("Marl_water_body" %in% colnames(wide_table)){
+    wide_table$Marl_water_body<- as.logical(wide_table$Marl_water_body)
+    wide_table$Marl_water_body[is.na(wide_table$Marl_water_body)] <- FALSE
+  }
 
   return(wide_table)
 } # end of function

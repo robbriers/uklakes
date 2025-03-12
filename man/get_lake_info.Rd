@@ -11,8 +11,7 @@ get_lake_info(...)
 \item{...}{A lake id number or series of lake id numbers to be searched.
 Individual values should be separated by commas. R-type sequences can also
 be passed in e.g. 34:48, or alternatively a vector of values or df column.
-See examples.
-#'}
+See examples.}
 }
 \value{
 A data frame containing the available information about the specified
@@ -22,8 +21,9 @@ information provided, see the UK CEH Lake Portal website
 (\url{https://uklakes.ceh.ac.uk/}.)
 }
 \description{
-Get a summary of available information about a lake or lakes from the
-UK CEH Lakes Portal
+Produces a summary of available information about a lake or
+lakes from the UK CEH Lakes Portal by responsibly webscraping lake
+information pages.
 }
 \examples{
 # get information for Loch Katrine and Loch Lomond
@@ -32,8 +32,9 @@ get_lake_info(24447, 24531)
 # get lake information for a set of lakes including a sequence
 get_lake_info(4, 5, 6, 34:37)
 
-# can also pass in the lakeid column from the output of search_names
-tarn_list <- search_names("Tarn")
-get_lake_info(tarn_list$lakeid)
+# can also pass in the lakeid column from the output of search_lakes
+tarn_list <- search_lakes("Tarn")
+# just retrieve the first 5 lakes
+get_lake_info(tarn_list$lakeid[1:5])
 
 }
