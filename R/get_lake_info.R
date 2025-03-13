@@ -133,7 +133,7 @@ get_lake_info <- function(...) {
     combined_tables <- rbind(combined_tables, new_row)
 
     # add on lake id
-    combined_tables$Lakeid <- lakes[i]
+    combined_tables$lakeid <- lakes[i]
 
     # now combine with output df before looping to the next one
     output_df <- rbind(output_df, combined_tables)
@@ -142,17 +142,17 @@ get_lake_info <- function(...) {
 
   # wrangle final output
 
-  names(output_df) <- c("parameter", "value", "Lakeid")
+  names(output_df) <- c("parameter", "value", "lakeid")
 
   # reshape data to wide format
-  wide_table <- as.data.frame(tidyr::pivot_wider(output_df, names_from = parameter, values_from = value, id_cols=Lakeid))
+  wide_table <- as.data.frame(tidyr::pivot_wider(output_df, names_from = parameter, values_from = value, id_cols=lakeid))
 
   # if marl lake status is present then add to columns on left of table
   if ("Marl_water_body" %in% colnames(wide_table)){
-    left_cols <- c("Lakeid", "Name", "Grid_reference", "Easting", "Northing", "Elevation_type", "Size_type", "Depth_type", "Geology_type", "Humic_type", "Marl_water_body")
+    left_cols <- c("lakeid", "Name", "Grid_reference", "Easting", "Northing", "Elevation_type", "Size_type", "Depth_type", "Geology_type", "Humic_type", "Marl_water_body")
   } else {
     # alternative set if it is not present
-    left_cols <- c("Lakeid", "Name", "Grid_reference", "Easting", "Northing", "Elevation_type", "Size_type", "Depth_type", "Geology_type", "Humic_type")
+    left_cols <- c("lakeid", "Name", "Grid_reference", "Easting", "Northing", "Elevation_type", "Size_type", "Depth_type", "Geology_type", "Humic_type")
   }
 
   # define the remaining numeric columns
@@ -162,7 +162,7 @@ get_lake_info <- function(...) {
   wide_table <- wide_table[, c(left_cols, right_cols)]
 
   # convert data types, first numeric
-  wide_table[c("Lakeid", "Easting", "Northing", right_cols)] <- lapply(wide_table[c("Lakeid", "Easting", "Northing", right_cols)], as.numeric)
+  wide_table[c("lakeid", "Easting", "Northing", right_cols)] <- lapply(wide_table[c("lakeid", "Easting", "Northing", right_cols)], as.numeric)
   # then marl to a boolean if present
   if ("Marl_water_body" %in% colnames(wide_table)){
     wide_table$Marl_water_body<- as.logical(wide_table$Marl_water_body)
