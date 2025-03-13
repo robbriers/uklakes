@@ -34,13 +34,54 @@ You can install the current version of uklakes from
 pak::pak("robbriers/uklakes")
 ```
 
-## Examples of use
+## Details of use
 
-This is a basic example which shows you how to solve a common problem:
+There are two functions in the package.
+
+The `search_lakes` function allows you to search for the lakeid numbers
+for lakes matching (partial or full matches, case sensitive) a string
+provided.
 
 ``` r
 library(uklakes)
-#> Use of this package implies acceptance of Terms of Use at 
-#> https://www.ceh.ac.uk/terms-of-use
-## basic example code
+search_lakes("Tarn")
+# 140 Tarns in the portal database
+
+search_lakes("Leven")
+# two Loch Levens and one Loch of Levenwick
 ```
+
+The second function (`get_lake_info`) retrieves the available
+information for the lake or lakes specified (lakeid numbers). You can
+retrieve a single lake (a single lakeid value), a series (lakeid numbers
+separated by commas), a sequence of lakeids (specified in the normal R
+sequence manner, i.e. 45:48), a vector of lakeids (either as a
+standalone vector or a column of a df e.g. the lakeid column from the
+output of search_lakes or a combination of these. See examples below.
+
+``` r
+# Loch Katrine
+get_lake_info(24447)
+
+# some small lakes in Shetland
+get_lake_info(4, 6, 9)
+
+# a series of small lakes in Shetland
+get_lake_info(1232:1238)
+
+# the first 5 Tarns in the database
+tarns <- search_lakes("Tarn")
+get_lake_info(tarns$lakeid[1:5])
+```
+
+The information is obtained by responsibly webscraping the lake
+information webpages. The package respects the rate limit and repeat
+request values specified by the robots.txt file of the UK CEH Lakes
+Portal pages (currently 1 request per 5 seconds and maximum of 3
+attempts) and reports progress through the console. Any lakes that it
+fails to retrieve (either through incorrect lakeids or other reasons)
+are reported at the end of the process.
+
+The resultant output will have a different number of columns depending
+on what information is available for the lakes specified, giving NA
+values for those columns where the data is absent.

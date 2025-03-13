@@ -169,5 +169,5 @@ get_lake_info <- function(...) {
     wide_table$Marl_water_body[is.na(wide_table$Marl_water_body)] <- FALSE
   }
 
-  return(wide_table)
+  return(as.data.frame(wide_table))
 } # end of function
