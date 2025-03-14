@@ -61,6 +61,11 @@ get_lake_info <- function(...) {
     # scrape page source
     lake_page <- polite::scrape(session, query=list(wbid=lakes[i]), verbose=FALSE)
 
+
+  # if scrape returns something then process
+
+    if(!is.null(lake_page)){
+
     # extract waterbody name
     wb_name <- rvest::html_text2(rvest::html_element(lake_page, "h1"))
 
@@ -138,6 +143,7 @@ get_lake_info <- function(...) {
     # now combine with output df before looping to the next one
     output_df <- rbind(output_df, combined_tables)
 
+    } # end of the if NULL bit
   } # this is the end of the main for
 
   # wrangle final output
