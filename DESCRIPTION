@@ -1,6 +1,6 @@
 Package: uklakes
 Title: Retrieves Lake Information from UK CEH Lakes Portal
-Version: 0.1.0.9000
+Version: 0.1.0.9001
 Authors@R: 
     person("Rob", "Briers", , "r.briers@napier.ac.uk", role = c("aut", "cre"))
 Description: Retrieves a summary of the lake information from the UK CEH Lake Portal for a lake or series of lakes, based on the lakeid. Can also search for lakeid values based on strings in the lake name. For details of the information available, see the Lakes Portal Website (\url{https://uklakes.ceh.ac.uk/}.)
