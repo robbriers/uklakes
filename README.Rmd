@@ -65,7 +65,7 @@ get_lake_info(1232:1238)
 
 # the first 5 Tarns in the database
 tarns <- search_lakes("Tarn")
-get_lake_info(tarns$lakeid[1:5])
+get_lake_info(tarns$wbid[1:5])
 ```
 
 The information is obtained by responsibly webscraping the lake information webpages. The package respects the rate limit and repeat request values specified by the robots.txt file of the UK CEH Lakes Portal pages (currently 1 request per 5 seconds and maximum of 3 attempts) and reports progress through the console. Any lakes that it fails to retrieve (either through incorrect wbids or other reasons) are reported at the end of the process.

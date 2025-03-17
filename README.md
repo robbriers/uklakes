@@ -73,7 +73,7 @@ get_lake_info(1232:1238)
 
 # the first 5 Tarns in the database
 tarns <- search_lakes("Tarn")
-get_lake_info(tarns$lakeid[1:5])
+get_lake_info(tarns$wbid[1:5])
 ```
 
 The information is obtained by responsibly webscraping the lake
