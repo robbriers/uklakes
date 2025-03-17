@@ -4,6 +4,8 @@
 # uklakes <img src="man/figures/logo.png" align="right" height="139" alt="" />
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/robbriers/uklakes/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/robbriers/uklakes/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The uklakes package allows you to retrieve a summary of the lake

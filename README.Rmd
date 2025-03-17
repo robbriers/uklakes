@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # uklakes <img src="man/figures/logo.png" align="right" height="139" alt="" />
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/robbriers/uklakes/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/robbriers/uklakes/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The uklakes package allows you to retrieve a summary of the lake information from the [UK CEH Lake Portal](https://uklakes.ceh.ac.uk/) for a lake or series of lakes, based on the lake wbid number. It does this by responsibly webscraping the information (using the [polite package](https://cran.r-project.org/package=polite)) from the webpage of each lake.
