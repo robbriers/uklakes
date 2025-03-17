@@ -1,1 +1,1 @@
-utils::globalVariables(c("parameter", "value", "Lakeid"))
+utils::globalVariables(c("parameter", "value", "wbid"))
