@@ -6,7 +6,7 @@
 #' lakes from the UK CEH Lakes Portal by responsibly webscraping lake
 #' information pages.
 #'
-#' @param ... A lake id number or series of lake id numbers to be searched.
+#' @param ... A lake wbid number or series of lake wbid numbers to be searched.
 #' Individual values should be separated by commas. R-type sequences can also
 #' be passed in e.g. 34:48, or alternatively a vector of values or df column.
 #' See examples.
@@ -20,16 +20,16 @@
 #' @export get_lake_info
 #'
 #' @examples
-#' # get information for Loch Katrine and Loch Lomond
+#' # get information for Loch Lomond and Loch Katrine
 #' get_lake_info(24447, 24531)
 #'
 #' # get lake information for a set of lakes including a sequence
 #' get_lake_info(4, 5, 6, 34:37)
 #'
-#' # can also pass in the lakeid column from the output of search_lakes
+#' # can also pass in the wbid column from the output of search_lakes
 #' tarn_list <- search_lakes("Tarn")
 #' # just retrieve the first 5 lakes
-#' get_lake_info(tarn_list$lakeid[1:5])
+#' get_lake_info(tarn_list$wbid[1:5])
 #'
 get_lake_info <- function(...) {
 
@@ -48,7 +48,7 @@ get_lake_info <- function(...) {
   }
 
   # create empty df for combined lake information
-  output_df <- data.frame(X1=character(), X2=character(), lakeid=double())
+  output_df <- data.frame(X1=character(), X2=character(), wbid=double())
 
   # introduce scraper to host, using base url
   url <- "https://uklakes.ceh.ac.uk/detail.html"
@@ -76,29 +76,35 @@ get_lake_info <- function(...) {
     all_tables <- rvest::html_table(lake_page)
 
     # extract typology table
-    typology <- all_tables[3]
+    typology <- do.call(rbind, all_tables[3])
 
     # delete typology table from rest of list
     all_tables[3] <- NULL
 
     # check for marl water body information in the chemistry information
-    chemistry <- dplyr::bind_rows(all_tables[3])
+    #chemistry <- dplyr::bind_rows(all_tables[3])
+    chemistry <- do.call(rbind, all_tables[3])
+
     all_tables[3] <- NULL
 
     # if there is chemistry information then check for marl lakes
     if(nrow(chemistry)>0){
       chemistry$X2[grepl("Marl water", chemistry$X1, ignore.case = TRUE)] <- "TRUE"
       # bind chemistry with the rest of tables and remove units
-      combined_tables <- dplyr::bind_rows(all_tables, chemistry)
+      #combined_tables <- dplyr::bind_rows(all_tables, chemistry)
+      combined_tables <- do.call(rbind, all_tables)
+      combined_tables <- do.call(rbind, list(combined_tables, chemistry))
     } else{
-      combined_tables <- dplyr::bind_rows(all_tables)
-    }
+      #combined_tables <- dplyr::bind_rows(all_tables)
+      combined_tables <- do.call(rbind, (all_tables))
+      }
 
     # remove units from columns
     combined_tables$X2 <- sub(" .*", "", combined_tables$X2)
 
     # now add typology info back on
-    combined_tables <- dplyr::bind_rows(combined_tables, typology)
+    #combined_tables <- dplyr::bind_rows(combined_tables, typology)
+    combined_tables <- do.call(rbind, list(combined_tables, typology))
 
     # remove extra columns if biology table is present
     if (ncol(combined_tables)>2){
@@ -138,7 +144,7 @@ get_lake_info <- function(...) {
     combined_tables <- rbind(combined_tables, new_row)
 
     # add on lake id
-    combined_tables$lakeid <- lakes[i]
+    combined_tables$wbid <- lakes[i]
 
     # now combine with output df before looping to the next one
     output_df <- rbind(output_df, combined_tables)
@@ -148,17 +154,17 @@ get_lake_info <- function(...) {
 
   # wrangle final output
 
-  names(output_df) <- c("parameter", "value", "lakeid")
+  names(output_df) <- c("parameter", "value", "wbid")
 
   # reshape data to wide format
-  wide_table <- as.data.frame(tidyr::pivot_wider(output_df, names_from = parameter, values_from = value, id_cols=lakeid))
+  wide_table <- as.data.frame(tidyr::pivot_wider(output_df, names_from = parameter, values_from = value, id_cols=wbid))
 
   # if marl lake status is present then add to columns on left of table
   if ("Marl_water_body" %in% colnames(wide_table)){
-    left_cols <- c("lakeid", "Name", "Grid_reference", "Easting", "Northing", "Elevation_type", "Size_type", "Depth_type", "Geology_type", "Humic_type", "Marl_water_body")
+    left_cols <- c("wbid", "Name", "Grid_reference", "Easting", "Northing", "Elevation_type", "Size_type", "Depth_type", "Geology_type", "Humic_type", "Marl_water_body")
   } else {
     # alternative set if it is not present
-    left_cols <- c("lakeid", "Name", "Grid_reference", "Easting", "Northing", "Elevation_type", "Size_type", "Depth_type", "Geology_type", "Humic_type")
+    left_cols <- c("wbid", "Name", "Grid_reference", "Easting", "Northing", "Elevation_type", "Size_type", "Depth_type", "Geology_type", "Humic_type")
   }
 
   # define the remaining numeric columns
@@ -168,7 +174,7 @@ get_lake_info <- function(...) {
   wide_table <- wide_table[, c(left_cols, right_cols)]
 
   # convert data types, first numeric
-  wide_table[c("lakeid", "Easting", "Northing", right_cols)] <- lapply(wide_table[c("lakeid", "Easting", "Northing", right_cols)], as.numeric)
+  wide_table[c("wbid", "Easting", "Northing", right_cols)] <- lapply(wide_table[c("wbid", "Easting", "Northing", right_cols)], as.numeric)
   # then marl to a boolean if present
   if ("Marl_water_body" %in% colnames(wide_table)){
     wide_table$Marl_water_body<- as.logical(wide_table$Marl_water_body)

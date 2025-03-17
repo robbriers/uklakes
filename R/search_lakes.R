@@ -8,7 +8,7 @@
 #' @param string The search string to be matched (case-sensitive). Will match
 #' whole or partial strings in the column values.
 #'#'
-#' @return A data frame containing the details (Name & lakeid) of all the sites
+#' @return A data frame containing the details (Name & wbid) of all the sites
 #' that match the search string (full or partial matches).
 #'
 #' @export search_lakes
