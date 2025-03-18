@@ -61,8 +61,6 @@ get_lake_info <- function(...) {
   # if there are some lakes to process
   if(length(lakes)>0){
 
-
-
     # create empty df for combined lake information
     output_df <- data.frame(X1=character(), X2=character(), wbid=double())
 
@@ -98,7 +96,6 @@ get_lake_info <- function(...) {
         all_tables[3] <- NULL
 
         # check for marl water body information in the chemistry information
-        #chemistry <- dplyr::bind_rows(all_tables[3])
         chemistry <- do.call(rbind, all_tables[3])
 
         all_tables[3] <- NULL
@@ -106,12 +103,10 @@ get_lake_info <- function(...) {
         # if there is chemistry information then check for marl lakes
         if(nrow(chemistry)>0){
           chemistry$X2[grepl("Marl water", chemistry$X1, ignore.case = TRUE)] <- "TRUE"
-          # bind chemistry with the rest of tables and remove units
-          #combined_tables <- dplyr::bind_rows(all_tables, chemistry)
+          # bind rest of tables and add chemistry if needed
           combined_tables <- do.call(rbind, all_tables)
           combined_tables <- do.call(rbind, list(combined_tables, chemistry))
         } else{
-          #combined_tables <- dplyr::bind_rows(all_tables)
           combined_tables <- do.call(rbind, (all_tables))
         }
 
@@ -119,7 +114,6 @@ get_lake_info <- function(...) {
         combined_tables$X2 <- sub(" .*", "", combined_tables$X2)
 
         # now add typology info back on
-        #combined_tables <- dplyr::bind_rows(combined_tables, typology)
         combined_tables <- do.call(rbind, list(combined_tables, typology))
 
         # remove extra columns if biology table is present
