@@ -20,6 +20,7 @@
 #' @export get_lake_info
 #'
 #' @examples
+#' \dontrun{
 #' # get information for Loch Lomond and Loch Katrine
 #' get_lake_info(24447, 24531)
 #'
@@ -30,6 +31,7 @@
 #' tarn_list <- search_lakes("Tarn")
 #' # just retrieve the first 5 lakes
 #' get_lake_info(tarn_list$wbid[1:5])
+#' }
 #'
 get_lake_info <- function(...) {
 
@@ -56,7 +58,7 @@ get_lake_info <- function(...) {
 
   # now do the scraping based on input values in vector 'lakes'
   for (i in 1:length(lakes)) {
-    message("Scraping lake ID ", lakes[i])
+    message("Scraping lake wbid ", lakes[i])
 
     # scrape page source
     lake_page <- polite::scrape(session, query=list(wbid=lakes[i]), verbose=FALSE)
@@ -66,90 +68,91 @@ get_lake_info <- function(...) {
 
     if(!is.null(lake_page)){
 
-    # extract waterbody name
-    wb_name <- rvest::html_text2(rvest::html_element(lake_page, "h1"))
+      # extract waterbody name
+      wb_name <- rvest::html_text2(rvest::html_element(lake_page, "h1"))
 
-    # remove secondary info from name
-    wb_name <- substring(wb_name, 0, regexpr('\n', wb_name)-1)
+      # remove secondary info from name
+      wb_name <- substring(wb_name, 0, regexpr('\n', wb_name)-1)
 
-    # extract all tables for reference
-    all_tables <- rvest::html_table(lake_page)
+      # extract all tables for reference
+      all_tables <- rvest::html_table(lake_page)
 
-    # extract typology table
-    typology <- do.call(rbind, all_tables[3])
+      # extract typology table
+      typology <- do.call(rbind, all_tables[3])
 
-    # delete typology table from rest of list
-    all_tables[3] <- NULL
+      # delete typology table from rest of list
+      all_tables[3] <- NULL
 
-    # check for marl water body information in the chemistry information
-    #chemistry <- dplyr::bind_rows(all_tables[3])
-    chemistry <- do.call(rbind, all_tables[3])
+      # check for marl water body information in the chemistry information
+      #chemistry <- dplyr::bind_rows(all_tables[3])
+      chemistry <- do.call(rbind, all_tables[3])
 
-    all_tables[3] <- NULL
+      all_tables[3] <- NULL
 
-    # if there is chemistry information then check for marl lakes
-    if(nrow(chemistry)>0){
-      chemistry$X2[grepl("Marl water", chemistry$X1, ignore.case = TRUE)] <- "TRUE"
-      # bind chemistry with the rest of tables and remove units
-      #combined_tables <- dplyr::bind_rows(all_tables, chemistry)
-      combined_tables <- do.call(rbind, all_tables)
-      combined_tables <- do.call(rbind, list(combined_tables, chemistry))
-    } else{
-      #combined_tables <- dplyr::bind_rows(all_tables)
-      combined_tables <- do.call(rbind, (all_tables))
+      # if there is chemistry information then check for marl lakes
+      if(nrow(chemistry)>0){
+        chemistry$X2[grepl("Marl water", chemistry$X1, ignore.case = TRUE)] <- "TRUE"
+        # bind chemistry with the rest of tables and remove units
+        #combined_tables <- dplyr::bind_rows(all_tables, chemistry)
+        combined_tables <- do.call(rbind, all_tables)
+        combined_tables <- do.call(rbind, list(combined_tables, chemistry))
+      } else{
+        #combined_tables <- dplyr::bind_rows(all_tables)
+        combined_tables <- do.call(rbind, (all_tables))
       }
 
-    # remove units from columns
-    combined_tables$X2 <- sub(" .*", "", combined_tables$X2)
+      # remove units from columns
+      combined_tables$X2 <- sub(" .*", "", combined_tables$X2)
 
-    # now add typology info back on
-    #combined_tables <- dplyr::bind_rows(combined_tables, typology)
-    combined_tables <- do.call(rbind, list(combined_tables, typology))
+      # now add typology info back on
+      #combined_tables <- dplyr::bind_rows(combined_tables, typology)
+      combined_tables <- do.call(rbind, list(combined_tables, typology))
 
-    # remove extra columns if biology table is present
-    if (ncol(combined_tables)>2){
-      combined_tables <- combined_tables[1:2]
-    }
+      # remove extra columns if biology table is present
+      if (ncol(combined_tables)>2){
+        combined_tables <- combined_tables[1:2]
+      }
 
-    # remove trailing [?] parts from values
-    combined_tables$X1 <- sub("\\[.*", "", combined_tables$X1)
+      # remove trailing [?] parts from values
+      combined_tables$X1 <- sub("\\[.*", "", combined_tables$X1)
 
-    # trim any non letters from the end of the strings
-    combined_tables$X1 <- sub("[^a-zA-Z]+$", "", combined_tables$X1)
+      # trim any non letters from the end of the strings
+      combined_tables$X1 <- sub("[^a-zA-Z]+$", "", combined_tables$X1)
 
-    # remove spaces from variable names to make it easier
-    combined_tables$X1 <- gsub(" ", "_", combined_tables$X1)
+      # remove spaces from variable names to make it easier
+      combined_tables$X1 <- gsub(" ", "_", combined_tables$X1)
 
-    # if not NI lake, then derive Eastings and Northings and add to info
-    if (lakes[i] < 50000){
-      # derive actual coords
-      coords <- rnrfa::osg_parse(combined_tables$X2[combined_tables$X1=="Grid_reference"])
+      # if not NI lake, then derive Eastings and Northings and add to info
+      if (lakes[i] < 50000){
+        # derive actual coords
+        coords <- rnrfa::osg_parse(combined_tables$X2[combined_tables$X1=="Grid_reference"])
 
-      # create rows with name, x and y in
-      new_headers <- c("Name", "Easting", "Northing")
-      new_row <- c(wb_name, coords$easting, coords$northing)
-      new_row <- cbind.data.frame(new_headers, new_row)
-      colnames(new_row) <- c("X1", "X2")
-    }
-    # if NI lake, just add name row
-    else{
-      # create rows with just name
-      new_headers <- c("Name")
-      new_row <- wb_name
-      new_row <- cbind.data.frame(new_headers, new_row)
-      colnames(new_row) <- c("X1", "X2")
-    }
+        # create rows with name, x and y in
+        new_headers <- c("Name", "Easting", "Northing")
+        new_row <- c(wb_name, coords$easting, coords$northing)
+        new_row <- cbind.data.frame(new_headers, new_row)
+        colnames(new_row) <- c("X1", "X2")
+      }
+      # if NI lake, just add name row
+      else{
+        # create rows with just name
+        new_headers <- c("Name")
+        new_row <- wb_name
+        new_row <- cbind.data.frame(new_headers, new_row)
+        colnames(new_row) <- c("X1", "X2")
+      }
 
-    # bind on additional information
-    combined_tables <- rbind(combined_tables, new_row)
+      # bind on additional information
+      combined_tables <- rbind(combined_tables, new_row)
 
-    # add on lake id
-    combined_tables$wbid <- lakes[i]
+      # add on lake id
+      combined_tables$wbid <- lakes[i]
 
-    # now combine with output df before looping to the next one
-    output_df <- rbind(output_df, combined_tables)
+      # now combine with output df before looping to the next one
+      output_df <- rbind(output_df, combined_tables)
 
     } # end of the if NULL bit
+
   } # this is the end of the main for
 
   # wrangle final output
