@@ -8,7 +8,7 @@ UK CEH Lakes Portal}
 get_lake_info(...)
 }
 \arguments{
-\item{...}{A lake id number or series of lake id numbers to be searched.
+\item{...}{A lake wbid number or series of lake wbid numbers to be searched.
 Individual values should be separated by commas. R-type sequences can also
 be passed in e.g. 34:48, or alternatively a vector of values or df column.
 See examples.}
@@ -26,15 +26,17 @@ lakes from the UK CEH Lakes Portal by responsibly webscraping lake
 information pages.
 }
 \examples{
-# get information for Loch Katrine and Loch Lomond
+\dontrun{
+# get information for Loch Lomond and Loch Katrine
 get_lake_info(24447, 24531)
 
 # get lake information for a set of lakes including a sequence
 get_lake_info(4, 5, 6, 34:37)
 
-# can also pass in the lakeid column from the output of search_lakes
+# can also pass in the wbid column from the output of search_lakes
 tarn_list <- search_lakes("Tarn")
 # just retrieve the first 5 lakes
-get_lake_info(tarn_list$lakeid[1:5])
+get_lake_info(tarn_list$wbid[1:5])
+}
 
 }
