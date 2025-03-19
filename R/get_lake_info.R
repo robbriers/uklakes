@@ -194,6 +194,6 @@ get_lake_info <- function(...) {
 
     return(as.data.frame(wide_table))
   } else {
-    message("No valid lake wbids provided to function")
+    stop("No valid lake wbids provided to function")
   } # end of if there are any lakes
 } # end of function
