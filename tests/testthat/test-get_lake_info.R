@@ -11,7 +11,7 @@ test_that("get_lake_info for a range of lakes returns a dataframe of right size"
   # retrieve data for a range of lakes
   test_range_lake<-get_lake_info(24445:24447)
 # check that it outputs a dataframe of the expected size (3x16)
-  expect_true(all(dim(test_range_lake)== c(3, 16)))
+  expect_true(all(dim(test_range_lake)== c(3, 35)))
 })
 
 test_that("invalid input returns an error", {
