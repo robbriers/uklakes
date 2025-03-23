@@ -173,9 +173,15 @@ get_lake_info <- function(...) {
     # if marl lake status is present then add to columns on left of table
     if ("Marl_water_body" %in% colnames(wide_table)){
       left_cols <- c("wbid", "Name", "Grid_reference", "Easting", "Northing", "Elevation_type", "Size_type", "Depth_type", "Geology_type", "Humic_type", "Marl_water_body")
-    } else {
-      # alternative set if it is not present
-      left_cols <- c("wbid", "Name", "Grid_reference", "Easting", "Northing", "Elevation_type", "Size_type", "Depth_type", "Geology_type", "Humic_type")
+    }
+    else {
+      # if it is a NI lake
+      if(min(wide_table$wbid)>50000){
+        left_cols <- c("wbid", "Name", "Elevation_type", "Size_type", "Depth_type", "Geology_type", "Humic_type")
+      } else {
+      # alternative set if it is not at NI lake
+        left_cols <- c("wbid", "Name", "Grid_reference", "Easting", "Northing", "Elevation_type", "Size_type", "Depth_type", "Geology_type", "Humic_type")
+      }
     }
 
     # define the remaining numeric columns
@@ -184,9 +190,18 @@ get_lake_info <- function(...) {
     # reorder the columns
     wide_table <- wide_table[, c(left_cols, right_cols)]
 
-    # convert data types, first numeric
-    wide_table[c("wbid", "Easting", "Northing", right_cols)] <- lapply(wide_table[c("wbid", "Easting", "Northing", right_cols)], as.numeric)
-    # then marl to a boolean if present
+    # convert data types, first numeric, leaving out E and N if NI lake
+    # this does not work as this goes through the whole vector!!!!!!!!!!!!!!!!!
+    ###########################################################################
+    # if all lakes are in NI set (wbid > 50000)
+    if(min(wide_table$wbid)>50000){
+      #       wide_table[c("wbid", right_cols)] <- lapply(wide_table[c("wbid", right_cols)], as.numeric)
+      wide_table[c(right_cols)] <- lapply(wide_table[c(right_cols)], as.numeric)
+    }
+    else {
+      wide_table[c("Easting", "Northing", right_cols)] <- lapply(wide_table[c("Easting", "Northing", right_cols)], as.numeric)
+    }
+    # then convert marl to a boolean if present
     if ("Marl_water_body" %in% colnames(wide_table)){
       wide_table$Marl_water_body<- as.logical(wide_table$Marl_water_body)
       wide_table$Marl_water_body[is.na(wide_table$Marl_water_body)] <- FALSE
