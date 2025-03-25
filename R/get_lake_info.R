@@ -75,9 +75,7 @@ get_lake_info <- function(...) {
       # scrape page source
       lake_page <- polite::scrape(session, query=list(wbid=lakes[i]), verbose=FALSE)
 
-
       # if scrape returns something then process
-
       if(!is.null(lake_page)){
 
         # extract waterbody name

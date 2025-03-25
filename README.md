@@ -10,6 +10,10 @@
 coverage](https://codecov.io/gh/robbriers/uklakes/graph/badge.svg)](https://app.codecov.io/gh/robbriers/uklakes)
 [![Lifecycle:
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+
 <!-- badges: end -->
 
 The [UK CEH Lake Portal](https://uklakes.ceh.ac.uk/) is a GIS-based
@@ -26,9 +30,9 @@ You can also search for lake wbid values based on strings in the lake
 name to determine the wbids to search for.
 
 Information on the general physical characteristics, typology, chemistry
-and connectivity metrics are retrieved. Biology and Land cover
-information are not. For details of the information available, see the
-[UK Lakes Portal Website](https://uklakes.ceh.ac.uk/).
+and connectivity metrics are retrieved. Biology, Land cover and water
+quality information are not. For details of the information available,
+see the [UK Lakes Portal Website](https://uklakes.ceh.ac.uk/).
 
 Use of the package implies acceptance of the Terms of Use available
 [here](https://www.ceh.ac.uk/terms-of-use).
