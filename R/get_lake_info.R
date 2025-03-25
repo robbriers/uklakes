@@ -44,10 +44,8 @@ get_lake_info <- function(...) {
 
   # loop through each element in lakelist and check input
   for (item in lakelist) {
-    # change this
-#    if (is.numeric(item)) {
-    if (is.numeric(item) && item == as.integer(item)) {
-      # if the item is numeric, add it directly
+    # if the input is numeric and integer values, then add to vector
+    if(is.numeric(item) && all(item == as.integer(item))){ # but does not handle strings - add in here
       lakes <- c(lakes, item)
     } else {
       bad_input <- c(bad_input, item)
