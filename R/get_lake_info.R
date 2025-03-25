@@ -44,7 +44,9 @@ get_lake_info <- function(...) {
 
   # loop through each element in lakelist and check input
   for (item in lakelist) {
-    if (is.numeric(item)) {
+    # change this
+#    if (is.numeric(item)) {
+    if (is.numeric(item) && item == as.integer(item)) {
       # if the item is numeric, add it directly
       lakes <- c(lakes, item)
     } else {
@@ -54,7 +56,7 @@ get_lake_info <- function(...) {
     # if not all input is good then message and stop
     if(length(bad_input)>0){
       bad_input <- paste(bad_input, collapse = " ")
-      stop(paste("Non-numeric input to function: ", bad_input), call.= FALSE)
+      stop(paste("Non-integer wbid information: ", bad_input), call.= FALSE)
     }
   }
 
@@ -66,7 +68,7 @@ get_lake_info <- function(...) {
 
     # introduce scraper to host, using base url
     url <- "https://uklakes.ceh.ac.uk/detail.html"
-    session <- polite::bow(url)
+    session <- polite::bow(url, user_agent="uklakes R package, https://github.com/robbriers/uklakes")
 
     # now do the scraping based on input values in vector 'lakes'
     for (i in 1:length(lakes)) {

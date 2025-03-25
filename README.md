@@ -6,15 +6,18 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/robbriers/uklakes/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/robbriers/uklakes/actions/workflows/R-CMD-check.yaml)
-[![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![Codecov test
 coverage](https://codecov.io/gh/robbriers/uklakes/graph/badge.svg)](https://app.codecov.io/gh/robbriers/uklakes)
+[![Lifecycle:
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 <!-- badges: end -->
 
-The uklakes package allows you to retrieve a summary of the lake
-information from the [UK CEH Lake Portal](https://uklakes.ceh.ac.uk/)
-for a lake or series of lakes, based on the lake wbid number. It does
+The [UK CEH Lake Portal](https://uklakes.ceh.ac.uk/) is a GIS-based
+inventory of information about more than 40000 lakes across the UK. The
+information available for each lake varies, but includes basic physical
+description, typology and other information. The `uklakes` package
+allows you to retrieve a summary of the lake information for a lake or
+series of lakes, based on the lake wbid (waterbody id) number. It does
 this by responsibly webscraping the information (using the [polite
 package](https://cran.r-project.org/package=polite)) from the webpage of
 each lake.
