@@ -1,0 +1,53 @@
+---
+title: "Details of output columns"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+|Column                           |Detail                                                                            |
+|:--------------------------------|:---------------------------------------------------------------------------------|
+|wbid                             |Waterbody id number                                                               |
+|Name                             |Name of lake, if available                                                         |
+|Grid_reference                   |British National Grid Reference                                                   |
+|Easting                          |Easting (m)                                                                       |
+|Northing                         |Northing (m)                                                                      |
+|Elevation_type                   |Elevation class (low, mid, high)                                                  |
+|Size_type                        |Size typology (very small, small, large)                                          |
+|Depth_type                       |Depth typology (very shallow, shallow, deep)                                      |
+|Geology_type                     |Geology typology (low alkalinity, moderate alkalinity, high alkalinity, marl lake) |
+|Humic_type                       |Humic typology (clear, humic, unavailable)                                        |
+|Marl_water_body                  |Boolean if marl waterbody (>65% limestone in catchment)                           |
+|Surface_area                     |Lake surface area (m^2^)                                                            |
+|Mean_depth                       |Mean depth (m)                                                                    |
+|Maximum_depth                    |Maximum depth (m)                                                                 |
+|Elevation                        |Elevation (m)                                                                     |
+|Perimeter_length                 |Perimeter length of lake (km)                                                     |
+|Shoreline_development_index      |Shoreline development index, ratio of shorelength to lake area                    |
+|Fetch_distance                   |Distance of line of maximum fetch (km)                                            |
+|Distance_to_sea                  |Distance to sea (km)                                                              |
+|Water_body_volume                |Volume of lake (m^3^)                                                               |
+|Catchment_area                   |Catchment area (ha)                                                               |
+|Catchment-to-lake_ratio          |Ratio of catchment area to lake area                                              |
+|Catchment_mean_elevation         |Mean elevation of the lake catchment (m)                                          |
+|Catchment_mean_slope             |Mean slope of the lake catchment (degrees)                                        |
+|Catchment_lake_area              |Percentage of the lake catchment containing other lakes                           |
+|Catchment_pond_area              |Percentage of the lake catchment containing ponds (area <1ha)                     |
+|Catchment_strahler_1_length      |Length of river with Strahler order 1 in the lake catchment (m)                   |
+|Catchment_strahler_2_length      |Length of river with Strahler order 2 in the lake catchment (m)                   |
+|Catchment_strahler_3_length      |Length of river with Strahler order 3 in the lake catchment (m)                   |
+|Catchment_strahler_4_plus_length |Length of river with Strahler order 4 or higher in the lake catchment (m)         |
+|Catchment_obstacles_count        |Number of river barriers or obstacles in the lake catchment                       |
+|2km_buffer_river_length          |Total length of river in a 2km buffer around the lake (m)                         |
+|2km_buffer_lakes_perimeter       |Total perimeter of other lakes in a 2km buffer around the lake (m)                |
+|2km_buffer_ponds_perimeter       |Total perimeter of ponds in a 2km buffer around the lake (m)                      |
+|2km_buffer_canals_length         |Total length of canals in a 2km buffer around the lake (m)                        |
+|Mean_alkalinity                  |Mean alkalinity (microEq/L)                                                       |
+|Mean_colour                      |Mean colour (mgPt/L)                                                              |
+|Mean_dissolved_organic_carbon    |Mean dissolved organic carbon (mg/L)                                              |
+|Mean_conductivity                |Mean conductivity (microS/cm)                                                     |
