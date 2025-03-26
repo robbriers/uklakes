@@ -10,11 +10,11 @@ test_that("get_lake_info for a single lake returns a dataframe with one row", {
 test_that("get_lake_info for a range of lakes returns a dataframe of right size", {
   # retrieve data for a range of lakes
   test_range_lake<-get_lake_info(24445:24447)
-# check that it outputs a dataframe of the expected size (3x16)
+# check that it outputs a dataframe of the expected size (3x35)
   expect_true(all(dim(test_range_lake)== c(3, 35)))
 })
 
-test_that("invalid input returns an error", {
+test_that("string input returns an error", {
   # retrieve data for lake wbid "Aardvark"
   expect_error(get_lake_info("Aardvark"))
 })
@@ -22,6 +22,11 @@ test_that("invalid input returns an error", {
 test_that("blank input returns an error", {
   # retrieve data for blank lake wbid
   expect_error(get_lake_info())
+})
+
+test_that("non-integer numeric input returns an error", {
+  # retrieve data for real numeric lake wbid
+  expect_error(get_lake_info(5.53))
 })
 
 test_that("lake from NI does not have a grid reference column", {
