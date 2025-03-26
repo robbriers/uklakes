@@ -16,14 +16,14 @@ A data frame containing the details (Name & wbid) of all the sites
 that match the search string (full or partial matches).
 }
 \description{
-Searches the listing of UK CEH Lakes Portal sites to find names
-that contain the string provided.
+Searches the listing of UK CEH Lakes Portal lake sites to find
+names that contain the string provided.
 
 The search is done on an internal copy of the UK lakes listing rather than
 connecting to the UKCEH Lakes Portal site.
 }
 \examples{
-# search for sites containing "Tarn" in the name
-search_lakes("Tarn")
+# search for sites containing "mere" in the name
+search_lakes("mere")
 
 }

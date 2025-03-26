@@ -18,12 +18,12 @@ A data frame containing the available information about the specified
 lake or lakes. Biology, land cover and water quality information on the Lakes
 Portal webpages are not included, but all other information is provided.
 For details of the information provided, see the UK CEH Lake Portal website
-(\url{https://uklakes.ceh.ac.uk/}.)
+(\url{https://uklakes.ceh.ac.uk/}).
 }
 \description{
 Produces a summary of available information about a lake or
-lakes from the UK CEH Lakes Portal by responsibly webscraping lake
-information pages.
+lakes from the UK CEH Lakes Portal \url{https://uklakes.ceh.ac.uk/} by
+responsibly webscraping lake information pages.
 }
 \examples{
 \dontrun{

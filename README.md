@@ -13,7 +13,6 @@ stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-
 <!-- badges: end -->
 
 The [UK CEH Lake Portal](https://uklakes.ceh.ac.uk/) is a GIS-based
@@ -32,7 +31,8 @@ name to determine the wbids to search for.
 Information on the general physical characteristics, typology, chemistry
 and connectivity metrics are retrieved. Biology, Land cover and water
 quality information are not. For details of the information available,
-see the [UK Lakes Portal Website](https://uklakes.ceh.ac.uk/).
+see the [UK Lakes Portal Website](https://uklakes.ceh.ac.uk/), or the
+[output reference list](../articles/uklakes_output_ref.html).
 
 Use of the package implies acceptance of the Terms of Use available
 [here](https://www.ceh.ac.uk/terms-of-use).
@@ -58,7 +58,7 @@ string provided.
 ``` r
 library(uklakes)
 search_lakes("Tarn")
-# 140 Tarns in the portal database
+# 140 lakes with 'Tarn' in the name in the portal database
 
 search_lakes("Leven")
 # two Loch Levens and one Loch of Levenwick
@@ -96,12 +96,14 @@ fails to retrieve (either through incorrect wbids or other reasons) are
 reported at the end of the process.
 
 The resultant output will have a different number of columns depending
-on what information is available for the lakes specified, giving NA
-values for those columns where the data is absent.
+on what information is available for the lakes specified, giving `NA`
+values for those columns where the data is absent. A full listing of the
+possible output columns is given in the [output reference
+list](../articles/uklakes_output_ref.html)
 
 ## Code of Conduct
 
-Please note that the `uklakes` ppackage is released with a [Contributor
+Please note that the `uklakes` package is released with a [Contributor
 Code of
 Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html).
 By contributing to this project, you agree to abide by its terms.

@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, echo=FALSE, message=FALSE}
 library(uklakes)
 ```
 
@@ -83,7 +83,7 @@ five_tarns <- get_lake_info(all_tarns$wbid[1:5])
 
 The range of information provided varies widely between lakes. Basic physical description and typology information are always returned. For a full listing of the possible columns see the *output reference* listing.
 
-```{r, prep output, echo=FALSE, eval=TRUE, messages=FALSE}
+```{r, prep output, echo=FALSE, eval=TRUE, message=FALSE}
 five_tarns <- get_lake_info(all_tarns$wbid[1:5])
 ```
 

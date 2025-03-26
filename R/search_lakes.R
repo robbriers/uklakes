@@ -1,6 +1,6 @@
 #' Search database of site names
-#' @description Searches the listing of UK CEH Lakes Portal sites to find names
-#' that contain the string provided.
+#' @description Searches the listing of UK CEH Lakes Portal lake sites to find
+#' names that contain the string provided.
 #'
 #' The search is done on an internal copy of the UK lakes listing rather than
 #' connecting to the UKCEH Lakes Portal site.
@@ -14,8 +14,8 @@
 #' @export search_lakes
 #'
 #' @examples
-#' # search for sites containing "Tarn" in the name
-#' search_lakes("Tarn")
+#' # search for sites containing "mere" in the name
+#' search_lakes("mere")
 #'
 search_lakes <- function(string = NULL) {
   # extract list of rows that match search string
