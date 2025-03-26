@@ -10,6 +10,13 @@
 
 Retrieves a summary of the lake information from the UK CEH Lake Portal for a lake or series of lakes, based on the lakeid. Can also search for lakeid values based on strings in the lake name. For details of the information available, see the Lakes Portal Website (\url{https://uklakes.ceh.ac.uk/}.)
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://robbriers.github.io/uklakes/}
+}
+
+}
 \author{
 \strong{Maintainer}: Rob Briers \email{r.briers@napier.ac.uk} (\href{https://orcid.org/0000-0003-0341-1203}{ORCID})
 
