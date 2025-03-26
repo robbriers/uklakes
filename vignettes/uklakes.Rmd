@@ -1,7 +1,6 @@
 ---
 title: "Using the uklakes package"
 output: rmarkdown::html_vignette
-  keep_md: true
 vignette: >
   %\VignetteIndexEntry{Using the uklakes package}
   %\VignetteEngine{knitr::rmarkdown}
