@@ -12,9 +12,9 @@
 #' See examples.
 #'
 #' @return A data frame containing the available information about the specified
-#' lake or lakes. The 'Biology' information on the Lakes Portal webpages is not
-#' included, but all other information is provided. For details of the
-#' information provided, see the UK CEH Lake Portal website
+#' lake or lakes. Biology, land cover and water quality information on the Lakes
+#'  Portal webpages are not included, but all other information is provided.
+#'  For details of the information provided, see the UK CEH Lake Portal website
 #' (\url{https://uklakes.ceh.ac.uk/}.)
 #'
 #' @export get_lake_info
@@ -45,7 +45,7 @@ get_lake_info <- function(...) {
   # loop through each element in lakelist and check input
   for (item in lakelist) {
     # if the input is numeric and integer values, then add to vector
-    if(is.numeric(item) && all(item == as.integer(item))){ # but does not handle strings - add in here
+    if(is.numeric(item) && all(item == as.integer(item))){
       lakes <- c(lakes, item)
     } else {
       bad_input <- c(bad_input, item)
@@ -96,6 +96,7 @@ get_lake_info <- function(...) {
         # check for marl water body information in the chemistry information
         chemistry <- do.call(rbind, all_tables[3])
 
+        # delete chemistry table from the rest of the list
         all_tables[3] <- NULL
 
         # if there is chemistry information then check for marl lakes

@@ -98,3 +98,10 @@ reported at the end of the process.
 The resultant output will have a different number of columns depending
 on what information is available for the lakes specified, giving NA
 values for those columns where the data is absent.
+
+## Code of Conduct
+
+Please note that the uklakes project is released with a [Contributor
+Code of
+Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html).
+By contributing to this project, you agree to abide by its terms.

@@ -15,9 +15,9 @@ See examples.}
 }
 \value{
 A data frame containing the available information about the specified
-lake or lakes. The 'Biology' information on the Lakes Portal webpages is not
-included, but all other information is provided. For details of the
-information provided, see the UK CEH Lake Portal website
+lake or lakes. Biology, land cover and water quality information on the Lakes
+Portal webpages are not included, but all other information is provided.
+For details of the information provided, see the UK CEH Lake Portal website
 (\url{https://uklakes.ceh.ac.uk/}.)
 }
 \description{

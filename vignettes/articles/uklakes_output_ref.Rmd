@@ -1,5 +1,8 @@
 ---
-title: "Details of output columns"
+title: "uklakes: details of output columns"
+output: 
+  html_document: 
+    keep_md: true
 ---
 
 ```{r, include = FALSE}
