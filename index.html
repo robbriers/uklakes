@@ -6,6 +6,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Retrieves Lake Information from UK CEH Lakes Portal • uklakes</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -23,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="index.html">uklakes</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,10 +65,9 @@
 </div>
 <!-- badges: start -->
 
-<!-- badges: end -->
 <p>The <a href="https://uklakes.ceh.ac.uk/" class="external-link">UK CEH Lake Portal</a> is a GIS-based inventory of information about more than 40000 lakes across the UK. The information available for each lake varies, but includes basic physical description, typology and other information. The <code>uklakes</code> package allows you to retrieve a summary of the lake information for a lake or series of lakes, based on the lake wbid (waterbody id) number. It does this by responsibly webscraping the information (using the <a href="https://cran.r-project.org/package=polite" class="external-link">polite package</a>) from the webpage of each lake.</p>
 <p>You can also search for lake wbid values based on strings in the lake name to determine the wbids to search for.</p>
-<p>Information on the general physical characteristics, typology, chemistry and connectivity metrics are retrieved. Biology, Land cover and water quality information are not. For details of the information available, see the <a href="https://uklakes.ceh.ac.uk/" class="external-link">UK Lakes Portal Website</a>.</p>
+<p>Information on the general physical characteristics, typology, chemistry and connectivity metrics are retrieved. Biology, Land cover and water quality information are not. For details of the information available, see the <a href="https://uklakes.ceh.ac.uk/" class="external-link">UK Lakes Portal Website</a>, or the <a href="../articles/uklakes_output_ref.html">output reference list</a>.</p>
 <p>Use of the package implies acceptance of the Terms of Use available <a href="https://www.ceh.ac.uk/terms-of-use" class="external-link">here</a>.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -80,7 +85,7 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://robbriers.github.io/uklakes/">uklakes</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/search_lakes.html">search_lakes</a></span><span class="op">(</span><span class="st">"Tarn"</span><span class="op">)</span></span>
-<span><span class="co"># 140 Tarns in the portal database</span></span>
+<span><span class="co"># 140 lakes with 'Tarn' in the name in the portal database</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/search_lakes.html">search_lakes</a></span><span class="op">(</span><span class="st">"Leven"</span><span class="op">)</span></span>
 <span><span class="co"># two Loch Levens and one Loch of Levenwick</span></span></code></pre></div>
@@ -99,12 +104,12 @@
 <span><span class="va">tarns</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/search_lakes.html">search_lakes</a></span><span class="op">(</span><span class="st">"Tarn"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/get_lake_info.html">get_lake_info</a></span><span class="op">(</span><span class="va">tarns</span><span class="op">$</span><span class="va">wbid</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <p>The information is obtained by responsibly webscraping the lake information webpages. The package respects the rate limit and repeat request values specified by the robots.txt file of the UK CEH Lakes Portal pages (currently 1 request per 5 seconds and maximum of 3 attempts) and reports progress through the console. Any lakes that it fails to retrieve (either through incorrect wbids or other reasons) are reported at the end of the process.</p>
-<p>The resultant output will have a different number of columns depending on what information is available for the lakes specified, giving NA values for those columns where the data is absent.</p>
+<p>The resultant output will have a different number of columns depending on what information is available for the lakes specified, giving <code>NA</code> values for those columns where the data is absent. A full listing of the possible output columns is given in the <a href="../articles/uklakes_output_ref.html">output reference list</a></p>
 </div>
 <div class="section level2">
 <h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
 </h2>
-<p>Please note that the <code>uklakes</code> ppackage is released with a <a href="https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html" class="external-link">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
+<p>Please note that the <code>uklakes</code> package is released with a <a href="https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html" class="external-link">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
