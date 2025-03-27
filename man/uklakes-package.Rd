@@ -14,6 +14,7 @@ Retrieves a summary of the lake information from the UK CEH Lake Portal for a la
 Useful links:
 \itemize{
   \item \url{https://robbriers.github.io/uklakes/}
+  \item Report bugs at \url{https://github.com/robbriers/uklakes/issues}
 }
 
 }

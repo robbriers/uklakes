@@ -14,7 +14,7 @@ stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![pkgcheck](https://github.com/robbriers/uklakes/workflows/pkgcheck/badge.svg)](https://github.com/robbriers/uklakes/actions?query=workflow%3Apkgcheck)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15092618.svg)](https://doi.org/10.5281/zenodo.15092618)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15092617.svg)](https://doi.org/10.5281/zenodo.15092617)
 <!-- badges: end -->
 
 The [UK CEH Lake Portal](https://uklakes.ceh.ac.uk/) is a GIS-based
