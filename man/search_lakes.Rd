@@ -8,8 +8,7 @@ search_lakes(string = NULL)
 }
 \arguments{
 \item{string}{The search string to be matched (case-sensitive). Will match
-whole or partial strings in the column values.
-#'}
+whole or partial strings in the column values.}
 }
 \value{
 A data frame containing the details (Name & wbid) of all the sites
