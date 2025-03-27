@@ -23,3 +23,4 @@ Config/testthat/edition: 3
 Config/Needs/website: rmarkdown
 VignetteBuilder: knitr
 URL: https://robbriers.github.io/uklakes/
+BugReports: https://github.com/robbriers/uklakes/issues
