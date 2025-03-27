@@ -19,21 +19,21 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 The [UK CEH Lake Portal](https://uklakes.ceh.ac.uk/) is a GIS-based
 inventory of information about more than 40000 lakes across the UK. The
 information available for each lake varies, but includes basic physical
-description, typology and other information. The `uklakes` package
-allows you to retrieve a summary of the lake information for a lake or
-series of lakes, based on the lake wbid (waterbody id) number. It does
-this by responsibly webscraping the information (using the [polite
-package](https://cran.r-project.org/package=polite)) from the webpage of
-each lake.
+description, typology and other information.
 
-You can also search for lake wbid values based on strings in the lake
-name to determine the wbids to search for.
+The `uklakes` package allows you to retrieve a summary of the lake
+information for a lake or series of lakes, based on the lake wbid
+(waterbody id) number. It does this by responsibly webscraping the
+information (using the [polite
+package](https://cran.r-project.org/package=polite)) from the webpage of
+each lake. You can also search for lake wbid values based on strings in
+the lake name to determine the wbids to search for.
 
 Information on the general physical characteristics, typology, chemistry
 and connectivity metrics are retrieved. Biology, Land cover and water
 quality information are not. For details of the information available,
 see the [UK Lakes Portal Website](https://uklakes.ceh.ac.uk/), or the
-[output reference list](../articles/uklakes_output_ref.html).
+[output reference list](./articles/uklakes_output_ref.html).
 
 Use of the package implies acceptance of the Terms of Use available
 [here](https://www.ceh.ac.uk/terms-of-use).
@@ -100,7 +100,7 @@ The resultant output will have a different number of columns depending
 on what information is available for the lakes specified, giving `NA`
 values for those columns where the data is absent. A full listing of the
 possible output columns is given in the [output reference
-list](../articles/uklakes_output_ref.html)
+list](./articles/uklakes_output_ref.html)
 
 ## Code of Conduct
 
