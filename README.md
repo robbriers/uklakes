@@ -13,6 +13,7 @@ stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![pkgcheck](https://github.com/robbriers/uklakes/workflows/pkgcheck/badge.svg)](https://github.com/robbriers/uklakes/actions?query=workflow%3Apkgcheck)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15092618.svg)](https://doi.org/10.5281/zenodo.15092618)
 <!-- badges: end -->
 
