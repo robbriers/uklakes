@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="index.html">uklakes</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,7 +68,7 @@
 <!-- badges: start -->
 
 <p>The <a href="https://uklakes.ceh.ac.uk/" class="external-link">UK CEH Lake Portal</a> is a GIS-based inventory of information about more than 40000 lakes across the UK. The information available for each lake varies, but includes basic physical description, typology and other information.</p>
-<p>The <code>uklakes</code> package allows you to retrieve a summary of the lake information for a lake or series of lakes, based on the lake wbid (waterbody id) number. It does this by responsibly webscraping the information (using the <a href="https://cran.r-project.org/package=polite" class="external-link">polite package</a>) from the webpage of each lake. You can also search for lake wbid values based on strings in the lake name to determine the wbids to search for.</p>
+<p>The <code>uklakes</code> package allows you to retrieve a summary of the lake information for a lake or series of lakes, based on the lake wbid (waterbody id) number. It does this by responsibly webscraping the information (using the <a href="https://cran.r-project.org/package=polite" class="external-link">polite package</a>) from the webpage of each lake as the website does not provide an API or any easy way to extract the data returned. You can also search for lake wbid values based on strings in the lake name to determine the wbids to search for.</p>
 <p>Information on the general physical characteristics, typology, chemistry and connectivity metrics are retrieved. Biology, Land cover and water quality information are not. For details of the information available, see the <a href="https://uklakes.ceh.ac.uk/" class="external-link">UK Lakes Portal Website</a>, or the <a href="https://robbriers.github.io/uklakes/articles/uklakes_output_ref.html">output reference list</a>.</p>
 <p>Use of the package implies acceptance of the Terms of Use available <a href="https://www.ceh.ac.uk/terms-of-use" class="external-link">here</a>.</p>
 <div class="section level2">
@@ -82,31 +82,7 @@
 <div class="section level2">
 <h2 id="details-of-use">Details of use<a class="anchor" aria-label="anchor" href="#details-of-use"></a>
 </h2>
-<p>There are two functions in the package.</p>
-<p>The <code>search_lakes</code> function allows you to search for the lake wbid numbers for lakes matching (partial or full matches, case sensitive) a string provided.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://robbriers.github.io/uklakes/">uklakes</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/search_lakes.html">search_lakes</a></span><span class="op">(</span><span class="st">"Tarn"</span><span class="op">)</span></span>
-<span><span class="co"># 140 lakes with 'Tarn' in the name in the portal database</span></span>
-<span></span>
-<span><span class="fu"><a href="reference/search_lakes.html">search_lakes</a></span><span class="op">(</span><span class="st">"Leven"</span><span class="op">)</span></span>
-<span><span class="co"># two Loch Levens and one Loch of Levenwick</span></span></code></pre></div>
-<p>The second function (<code>get_lake_info</code>) retrieves the available information for the lake or lakes specified (wbid numbers). You can retrieve a single lake (a single wbid value), a series (wbid numbers separated by commas), a sequence of wbids (specified in the normal R sequence manner, i.e. 45:48), a vector of wbids (either as a standalone vector or a column of a df e.g. the wbid column from the output of search_lakes or a combination of these. See examples below.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Loch Lomond</span></span>
-<span><span class="fu"><a href="reference/get_lake_info.html">get_lake_info</a></span><span class="op">(</span><span class="fl">24447</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># some small lakes in Shetland</span></span>
-<span><span class="fu"><a href="reference/get_lake_info.html">get_lake_info</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">6</span>, <span class="fl">9</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># a series of small lakes in Shetland</span></span>
-<span><span class="fu"><a href="reference/get_lake_info.html">get_lake_info</a></span><span class="op">(</span><span class="fl">1232</span><span class="op">:</span><span class="fl">1238</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># the first 5 Tarns in the database</span></span>
-<span><span class="va">tarns</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/search_lakes.html">search_lakes</a></span><span class="op">(</span><span class="st">"Tarn"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/get_lake_info.html">get_lake_info</a></span><span class="op">(</span><span class="va">tarns</span><span class="op">$</span><span class="va">wbid</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<p>The information is obtained by responsibly webscraping the lake information webpages. The package respects the rate limit and repeat request values specified by the robots.txt file of the UK CEH Lakes Portal pages (currently 1 request per 5 seconds and maximum of 3 attempts) and reports progress through the console. Any lakes that it fails to retrieve (either through incorrect wbids or other reasons) are reported at the end of the process.</p>
-<p>The resultant output will have a different number of columns depending on what information is available for the lakes specified, giving <code>NA</code> values for those columns where the data is absent. A full listing of the possible output columns is given in the <a href="https://robbriers.github.io/uklakes/articles/uklakes_output_ref.html">output reference list</a>.</p>
+<p>See the <a href="https://robbriers.github.io/uklakes/articles/uklakes.html">Get started</a> vignette for how to use the package.</p>
 </div>
 <div class="section level2">
 <h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>

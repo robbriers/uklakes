@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">uklakes</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,9 +71,9 @@
 
     
     
-<div class="section level2">
-<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h2>
+<div class="section level3">
+<h3 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h3>
 <p>The <a href="https://uklakes.ceh.ac.uk/" class="external-link">UK CEH Lake Portal</a> is a
 GIS-based inventory of information about more than 40000 lakes across
 the UK. The information available for each lake varies, but includes
@@ -82,9 +82,10 @@ basic physical description, typology and other information.</p>
 the lake information for a lake or series of lakes, based on the lake
 wbid (waterbody id) number. It does this by responsibly webscraping the
 information <a href="https://cran.r-project.org/package=polite" class="external-link">polite
-package</a>) from the webpage of each lake. You can also search for lake
-wbid values based on strings in the lake name to determine the wbids to
-search for.</p>
+package</a>) from the webpage of each lake as the website does not
+provide an API or any easy way to extract the data returned. You can
+also search for lake wbid values based on strings in the lake name to
+determine the wbids to search for.</p>
 <p>Information on the general physical characteristics, typology,
 chemistry and connectivity metrics are retrieved. Biology, land cover
 and water quality information are not. For details of the information
@@ -94,29 +95,21 @@ reference list</a>.</p>
 <p>Use of the package implies acceptance of the Terms of Use available
 <a href="https://www.ceh.ac.uk/terms-of-use" class="external-link">here</a>.</p>
 </div>
-<div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h2>
-<p>You can install the current version of uklakes from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"robbriers/uklakes"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
-</h2>
 <div class="section level3">
-<h3 id="search-for-wbid-numbers">Search for wbid numbers<a class="anchor" aria-label="anchor" href="#search-for-wbid-numbers"></a>
+<h3 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
 </h3>
-<p>The <code>search_lakes</code> function allows you to search a listing
+<div class="section level4">
+<h4 id="search-for-wbid-numbers">Search for wbid numbers<a class="anchor" aria-label="anchor" href="#search-for-wbid-numbers"></a>
+</h4>
+<p>The <code>search_lake</code> function allows you to search a listing
 of all the lakes within the portal, based on a string provided. It will
 return a dataframe containing the name and wbid number of all the lakes
 that contain (full or partial match, case sensitive) the string
 provided. Note that most of the lakes within the portal (particularly
 the small ones) do not have a name (76% of total).</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://robbriers.github.io/uklakes/">uklakes</a></span><span class="op">)</span></span>
-<span><span class="va">all_tarns</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_lakes.html">search_lakes</a></span><span class="op">(</span><span class="st">"Tarn"</span><span class="op">)</span></span>
+<span><span class="va">all_tarns</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_lake.html">search_lake</a></span><span class="op">(</span><span class="st">"Tarn"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">all_tarns</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 140</span></span>
 <span><span class="co"># 140 Tarns in the portal database</span></span>
@@ -131,7 +124,7 @@ the small ones) do not have a name (76% of total).</p>
 <span><span class="co">#&gt; 5        Tarns Dub 28651</span></span>
 <span><span class="co">#&gt; 6 Greencastle Tarn 28736</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/search_lakes.html">search_lakes</a></span><span class="op">(</span><span class="st">"Leven"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/search_lake.html">search_lake</a></span><span class="op">(</span><span class="st">"Leven"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                Name  wbid</span></span>
 <span><span class="co">#&gt; 1 Loch of Levenwick  1567</span></span>
 <span><span class="co">#&gt; 2        Loch Leven 18194</span></span>
@@ -140,36 +133,108 @@ the small ones) do not have a name (76% of total).</p>
 <p>The wbid column of the dataframe returned can be used as input to the
 data retrieval function (see below for examples).</p>
 </div>
-<div class="section level3">
-<h3 id="get-a-summary-of-information-for-a-lake-or-lakes">Get a summary of information for a lake or lakes<a class="anchor" aria-label="anchor" href="#get-a-summary-of-information-for-a-lake-or-lakes"></a>
-</h3>
+<div class="section level4">
+<h4 id="get-a-summary-of-information-for-a-lake-or-lakes">Get a summary of information for a lake or lakes<a class="anchor" aria-label="anchor" href="#get-a-summary-of-information-for-a-lake-or-lakes"></a>
+</h4>
 <p>The <code>get_lake_info</code> function retrieves the available
 information for a lake or lakes, based on the wbid numbers provided.</p>
 <p>Wbid numbers can be passed to the function as a single integer, a
 series of integer values, a sequence of values, a vector of values
 (either as a specific object or as a column of a dataframe) or a
 combination of these. See examples below.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Loch Lomond</span></span>
-<span><span class="fu"><a href="../reference/get_lake_info.html">get_lake_info</a></span><span class="op">(</span><span class="fl">24447</span><span class="op">)</span></span>
+</div>
+</div>
+<div class="section level2">
+<h2 id="loch-lomond">Loch Lomond<a class="anchor" aria-label="anchor" href="#loch-lomond"></a>
+</h2>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_lake_info.html">get_lake_info</a></span><span class="op">(</span><span class="fl">24447</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Scraping lake wbid 24447</span></span>
+<span><span class="co">#&gt;    wbid        Name Grid_reference Easting Northing Elevation_type Size_type</span></span>
+<span><span class="co">#&gt; 1 24447 Loch Lomond     NS37049448  237040   694480  Low elevation     Large</span></span>
+<span><span class="co">#&gt;   Depth_type   Geology_type            Humic_type Surface_area Mean_depth</span></span>
+<span><span class="co">#&gt; 1       Deep Low alkalinity Unavailable (no data)         7073         37</span></span>
+<span><span class="co">#&gt;   Maximum_depth Catchment_area Elevation Perimeter_length</span></span>
+<span><span class="co">#&gt; 1         189.9          76321         4              139</span></span>
+<span><span class="co">#&gt;   Shoreline_development_index Fetch_distance Distance_to_sea Water_body_volume</span></span>
+<span><span class="co">#&gt; 1                        4.66          14.25            2.26        2617021840</span></span>
+<span><span class="co">#&gt;   Catchment-to-lake_ratio Catchment_mean_elevation Catchment_mean_slope</span></span>
+<span><span class="co">#&gt; 1                    10.8                   242.77                10.14</span></span>
+<span><span class="co">#&gt;   Catchment_lake_area Catchment_pond_area Catchment_strahler_1_length</span></span>
+<span><span class="co">#&gt; 1               10.97                0.02                     1030784</span></span>
+<span><span class="co">#&gt;   Catchment_strahler_2_length Catchment_strahler_3_length</span></span>
+<span><span class="co">#&gt; 1                    283334.5                    149697.2</span></span>
+<span><span class="co">#&gt;   Catchment_strahler_4_plus_length Catchment_obstacles_count</span></span>
+<span><span class="co">#&gt; 1                         170280.1                        45</span></span>
+<span><span class="co">#&gt;   2km_buffer_river_length 2km_buffer_lakes_perimeter 2km_buffer_ponds_perimeter</span></span>
+<span><span class="co">#&gt; 1                393652.6                    7812.88                    3986.74</span></span>
+<span><span class="co">#&gt;   Mean_alkalinity Mean_conductivity</span></span>
+<span><span class="co">#&gt; 1             194                53</span></span>
 <span></span>
 <span><span class="co"># some small lakes in Shetland</span></span>
-<span><span class="fu"><a href="../reference/get_lake_info.html">get_lake_info</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">6</span>, <span class="fl">9</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/get_lake_info.html">get_lake_info</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">6</span>, <span class="fl">1232</span><span class="op">:</span><span class="fl">1234</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Scraping lake wbid 4</span></span>
+<span><span class="co">#&gt; Scraping lake wbid 6</span></span>
+<span><span class="co">#&gt; Scraping lake wbid 1232</span></span>
+<span><span class="co">#&gt; Scraping lake wbid 1233</span></span>
+<span><span class="co">#&gt; Scraping lake wbid 1234</span></span>
+<span><span class="co">#&gt;   wbid           Name Grid_reference Easting Northing Elevation_type  Size_type</span></span>
+<span><span class="co">#&gt; 1    4 Sothers Brecks     HP60551629  460550  1216290  Low elevation Very small</span></span>
+<span><span class="co">#&gt; 2    6        unnamed     HP67201542  467200  1215420  Low elevation Very small</span></span>
+<span><span class="co">#&gt; 3 1232        unnamed     HU26195455  426190  1154550  Low elevation Very small</span></span>
+<span><span class="co">#&gt; 4 1233        unnamed     HU27475458  427470  1154580  Low elevation Very small</span></span>
+<span><span class="co">#&gt; 5 1234   Restna Lochs     HU20375453  420370  1154530  Low elevation Very small</span></span>
+<span><span class="co">#&gt;     Depth_type          Geology_type            Humic_type Surface_area</span></span>
+<span><span class="co">#&gt; 1 Very shallow Unavailable (no data) Unavailable (no data)            0</span></span>
+<span><span class="co">#&gt; 2 Very shallow Unavailable (no data) Unavailable (no data)            0</span></span>
+<span><span class="co">#&gt; 3      Shallow       High alkalinity Unavailable (no data)            4</span></span>
+<span><span class="co">#&gt; 4 Very shallow Unavailable (no data) Unavailable (no data)            0</span></span>
+<span><span class="co">#&gt; 5      Shallow       High alkalinity Unavailable (no data)            2</span></span>
+<span><span class="co">#&gt;   Elevation Perimeter_length Shoreline_development_index Fetch_distance</span></span>
+<span><span class="co">#&gt; 1       122                0                        1.04           0.05</span></span>
+<span><span class="co">#&gt; 2        18                0                        1.05           0.04</span></span>
+<span><span class="co">#&gt; 3        38                1                        1.50           0.38</span></span>
+<span><span class="co">#&gt; 4        47                0                        1.05           0.09</span></span>
+<span><span class="co">#&gt; 5       146                1                        1.08           0.23</span></span>
+<span><span class="co">#&gt;   Distance_to_sea Mean_depth Catchment_area Water_body_volume</span></span>
+<span><span class="co">#&gt; 1            0.65         NA             NA                NA</span></span>
+<span><span class="co">#&gt; 2            0.04         NA             NA                NA</span></span>
+<span><span class="co">#&gt; 3            1.92        3.4             23            123516</span></span>
+<span><span class="co">#&gt; 4            1.31         NA             NA                NA</span></span>
+<span><span class="co">#&gt; 5            2.50        3.7             24             90444</span></span>
+<span><span class="co">#&gt;   Catchment-to-lake_ratio Catchment_mean_elevation Catchment_mean_slope</span></span>
+<span><span class="co">#&gt; 1                      NA                       NA                   NA</span></span>
+<span><span class="co">#&gt; 2                      NA                       NA                   NA</span></span>
+<span><span class="co">#&gt; 3                     6.4                    42.61                 2.47</span></span>
+<span><span class="co">#&gt; 4                      NA                       NA                   NA</span></span>
+<span><span class="co">#&gt; 5                     9.9                   153.80                 2.72</span></span>
+<span><span class="co">#&gt;   Catchment_pond_area Catchment_strahler_1_length Catchment_strahler_2_length</span></span>
+<span><span class="co">#&gt; 1                  NA                          NA                          NA</span></span>
+<span><span class="co">#&gt; 2                  NA                          NA                          NA</span></span>
+<span><span class="co">#&gt; 3                4.08                      519.41                      132.69</span></span>
+<span><span class="co">#&gt; 4                  NA                          NA                          NA</span></span>
+<span><span class="co">#&gt; 5                  NA                      590.66                      152.94</span></span>
+<span><span class="co">#&gt;   2km_buffer_river_length 2km_buffer_lakes_perimeter 2km_buffer_ponds_perimeter</span></span>
+<span><span class="co">#&gt; 1                      NA                         NA                         NA</span></span>
+<span><span class="co">#&gt; 2                      NA                         NA                         NA</span></span>
+<span><span class="co">#&gt; 3                24979.54                  135452.50                   12586.71</span></span>
+<span><span class="co">#&gt; 4                      NA                         NA                         NA</span></span>
+<span><span class="co">#&gt; 5                32894.07                   10388.93                     817.48</span></span>
+<span><span class="co">#&gt;   Catchment_lake_area</span></span>
+<span><span class="co">#&gt; 1                  NA</span></span>
+<span><span class="co">#&gt; 2                  NA</span></span>
+<span><span class="co">#&gt; 3                  NA</span></span>
+<span><span class="co">#&gt; 4                  NA</span></span>
+<span><span class="co">#&gt; 5                 8.9</span></span>
 <span></span>
-<span><span class="co"># a series of small lakes in Shetland</span></span>
-<span><span class="fu"><a href="../reference/get_lake_info.html">get_lake_info</a></span><span class="op">(</span><span class="fl">1232</span><span class="op">:</span><span class="fl">1238</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># the first 5 Tarns in the database</span></span>
-<span><span class="co">#tarns &lt;- search_lakes("Tarn")</span></span>
-<span><span class="va">five_tarns</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_lake_info.html">get_lake_info</a></span><span class="op">(</span><span class="va">all_tarns</span><span class="op">$</span><span class="va">wbid</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<p>The range of information provided varies widely between lakes. Basic
-physical description and typology information are always returned. For a
-full listing of the possible columns see the <em>output reference</em>
-listing.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># information from the first 5 Tarns in the database</span></span>
-<span><span class="co">#tarns &lt;- search_lakes("Tarn")</span></span>
-<span><span class="va">five_tarns</span></span>
+<span><span class="co"># the first 5 lakes containing 'Tarn' in the database</span></span>
+<span><span class="va">all_tarns</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_lake.html">search_lake</a></span><span class="op">(</span><span class="st">"Tarn"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/get_lake_info.html">get_lake_info</a></span><span class="op">(</span><span class="va">all_tarns</span><span class="op">$</span><span class="va">wbid</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Scraping lake wbid 23031</span></span>
+<span><span class="co">#&gt; Scraping lake wbid 28386</span></span>
+<span><span class="co">#&gt; Scraping lake wbid 28395</span></span>
+<span><span class="co">#&gt; Scraping lake wbid 28561</span></span>
+<span><span class="co">#&gt; Scraping lake wbid 28651</span></span>
 <span><span class="co">#&gt;    wbid         Name Grid_reference Easting Northing Elevation_type  Size_type</span></span>
 <span><span class="co">#&gt; 1 23031  Tarnie Loch     NO65155437  365150   754370  Low elevation Very small</span></span>
 <span><span class="co">#&gt; 2 28386  Talkin Tarn     NY54545875  354540   558750  Low elevation      Small</span></span>
@@ -224,7 +289,10 @@ listing.</p>
 <span><span class="co">#&gt; 3                          6.37                       NA</span></span>
 <span><span class="co">#&gt; 4                            NA                       46</span></span>
 <span><span class="co">#&gt; 5                            NA                       NA</span></span></code></pre></div>
-</div>
+<p>The range of information provided varies widely between lakes. Basic
+physical description and typology information are always returned. For a
+full listing of the possible columns see the <a href="../articles/uklakes_output_ref.html">output reference</a>
+listing.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
