@@ -69,7 +69,7 @@ get_lake_info <- function(...) {
         user_agent = "uklakes R package, https://github.com/robbriers/uklakes")
 
     # now do the scraping based on input values in vector 'lakes'
-    for (i in 1:length(lakes)) {
+    for (i in seq_len(length(lakes))) {
       message("Scraping lake wbid ", lakes[i])
 
       # scrape page source

@@ -2,7 +2,7 @@
 % Please edit documentation in R/search_lake.R
 \name{search_lake}
 \alias{search_lake}
-\title{Search database of site names}
+\title{Search database of lake names}
 \usage{
 search_lake(string = NULL)
 }

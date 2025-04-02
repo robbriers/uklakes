@@ -1,4 +1,4 @@
-#' Search database of site names
+#' Search database of lake names
 #' @description Searches the listing of UK CEH Lakes Portal lake sites to find
 #' names that contain the string provided.
 #'
