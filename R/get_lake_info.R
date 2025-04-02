@@ -3,8 +3,9 @@
 #'
 #' @description
 #' Produces a summary of available information about a lake or
-#' lakes from the UK CEH Lakes Portal \url{https://uklakes.ceh.ac.uk/} by
-#' responsibly webscraping lake information pages.
+#' lakes from the UK CEH Lakes Portal
+#' [https://uklakes.ceh.ac.uk/](https://uklakes.ceh.ac.uk/) by responsibly
+#' webscraping lake information pages.
 #'
 #' @param ... A lake wbid number or series of lake wbid numbers to be searched.
 #' Individual values should be separated by commas. R-type sequences can also
@@ -15,7 +16,7 @@
 #' lake or lakes. Biology, land cover and water quality information on the Lakes
 #'  Portal webpages are not included, but all other information is provided.
 #'  For details of the information provided, see the UK CEH Lake Portal website
-#' (\url{https://uklakes.ceh.ac.uk/}).
+#' ([https://uklakes.ceh.ac.uk/](https://uklakes.ceh.ac.uk/)).
 #'
 #' @export get_lake_info
 #'
@@ -28,13 +29,12 @@
 #' get_lake_info(4, 5, 6, 34:37)
 #'
 #' # can also pass in the wbid column from the output of search_lakes
-#' tarn_list <- search_lakes("Tarn")
+#' tarn_list <- search_lake("Tarn")
 #' # just retrieve the first 5 lakes
 #' get_lake_info(tarn_list$wbid[1:5])
 #' }
 #'
 get_lake_info <- function(...) {
-
   # capture arguments as a list
   lakelist <- list(...)
 
@@ -45,44 +45,44 @@ get_lake_info <- function(...) {
   # loop through each element in lakelist and check input
   for (item in lakelist) {
     # if the input is numeric and integer values, then add to vector
-    if(is.numeric(item) && all(item == as.integer(item))){
+    if (is.numeric(item) && all(item == as.integer(item))) {
       lakes <- c(lakes, item)
     } else {
       bad_input <- c(bad_input, item)
     }
 
     # if not all input is good then message and stop
-    if(length(bad_input)>0){
+    if (length(bad_input) > 0) {
       bad_input <- paste(bad_input, collapse = " ")
-      stop(paste("Non-integer wbid information: ", bad_input), call.= FALSE)
+      stop(paste("Non-integer wbid information: ", bad_input), call. = FALSE)
     }
   }
 
   # if there are some lakes to process
-  if(length(lakes)>0){
-
+  if (length(lakes) > 0) {
     # create empty df for combined lake information
-    output_df <- data.frame(X1=character(), X2=character(), wbid=double())
+    output_df <- data.frame(X1 = character(), X2 = character(), wbid = double())
 
     # introduce scraper to host, using base url
     url <- "https://uklakes.ceh.ac.uk/detail.html"
-    session <- polite::bow(url, user_agent="uklakes R package, https://github.com/robbriers/uklakes")
+    session <- polite::bow(url,
+        user_agent = "uklakes R package, https://github.com/robbriers/uklakes")
 
     # now do the scraping based on input values in vector 'lakes'
     for (i in 1:length(lakes)) {
       message("Scraping lake wbid ", lakes[i])
 
       # scrape page source
-      lake_page <- polite::scrape(session, query=list(wbid=lakes[i]), verbose=FALSE)
+      lake_page <- polite::scrape(session, query = list(wbid = lakes[i]),
+                                  verbose = FALSE)
 
       # if scrape returns something then process
-      if(!is.null(lake_page)){
-
+      if (!is.null(lake_page)) {
         # extract waterbody name
         wb_name <- rvest::html_text2(rvest::html_element(lake_page, "h1"))
 
         # remove secondary info from name
-        wb_name <- substring(wb_name, 0, regexpr('\n', wb_name)-1)
+        wb_name <- substring(wb_name, 0, regexpr("\n", wb_name) - 1)
 
         # extract all tables for reference
         all_tables <- rvest::html_table(lake_page)
@@ -100,12 +100,13 @@ get_lake_info <- function(...) {
         all_tables[3] <- NULL
 
         # if there is chemistry information then check for marl lakes
-        if(nrow(chemistry)>0){
-          chemistry$X2[grepl("Marl water", chemistry$X1, ignore.case = TRUE)] <- "TRUE"
+        if (nrow(chemistry) > 0) {
+          chemistry$X2[grepl("Marl water", chemistry$X1, ignore.case = TRUE)] <-
+            "TRUE"
           # bind rest of tables and add chemistry if needed
           combined_tables <- do.call(rbind, all_tables)
           combined_tables <- do.call(rbind, list(combined_tables, chemistry))
-        } else{
+        } else {
           combined_tables <- do.call(rbind, (all_tables))
         }
 
@@ -116,7 +117,7 @@ get_lake_info <- function(...) {
         combined_tables <- do.call(rbind, list(combined_tables, typology))
 
         # remove extra columns if biology table is present
-        if (ncol(combined_tables)>2){
+        if (ncol(combined_tables) > 2) {
           combined_tables <- combined_tables[1:2]
         }
 
@@ -130,9 +131,10 @@ get_lake_info <- function(...) {
         combined_tables$X1 <- gsub(" ", "_", combined_tables$X1)
 
         # if not NI lake, then derive Eastings and Northings and add to info
-        if (lakes[i] < 50000){
+        if (lakes[i] < 50000) {
           # derive actual coords
-          coords <- rnrfa::osg_parse(combined_tables$X2[combined_tables$X1=="Grid_reference"])
+          coords <- rnrfa::osg_parse(combined_tables$X2[combined_tables$X1 ==
+                                                          "Grid_reference"])
 
           # create rows with name, x and y in
           new_headers <- c("Name", "Easting", "Northing")
@@ -141,7 +143,7 @@ get_lake_info <- function(...) {
           colnames(new_row) <- c("X1", "X2")
         }
         # if NI lake, just add name row
-        else{
+        else {
           # create rows with just name
           new_headers <- c("Name")
           new_row <- wb_name
@@ -157,29 +159,32 @@ get_lake_info <- function(...) {
 
         # now combine with output df before looping to the next one
         output_df <- rbind(output_df, combined_tables)
-
-      } # end of the if NULL bit
-
-    } # this is the end of the main for
+      }
+    }
 
     # wrangle final output
-
     names(output_df) <- c("parameter", "value", "wbid")
 
     # reshape data to wide format
-    wide_table <- as.data.frame(tidyr::pivot_wider(output_df, names_from = parameter, values_from = value, id_cols=wbid))
+    wide_table <- as.data.frame(tidyr::pivot_wider(output_df, names_from =
+                                                     parameter, values_from =
+                                                     value, id_cols = wbid))
 
     # if marl lake status is present then add to columns on left of table
-    if ("Marl_water_body" %in% colnames(wide_table)){
-      left_cols <- c("wbid", "Name", "Grid_reference", "Easting", "Northing", "Elevation_type", "Size_type", "Depth_type", "Geology_type", "Humic_type", "Marl_water_body")
-    }
-    else {
-      # if it is a NI lake
-      if(min(wide_table$wbid)>50000){
-        left_cols <- c("wbid", "Name", "Elevation_type", "Size_type", "Depth_type", "Geology_type", "Humic_type")
+    if ("Marl_water_body" %in% colnames(wide_table)) {
+      left_cols <- c("wbid", "Name", "Grid_reference", "Easting", "Northing",
+                     "Elevation_type", "Size_type", "Depth_type",
+                     "Geology_type", "Humic_type", "Marl_water_body")
+    } else {
+      # if the output contains a NI lake
+      if (min(wide_table$wbid) > 50000) {
+        left_cols <- c("wbid", "Name", "Elevation_type", "Size_type",
+                       "Depth_type", "Geology_type", "Humic_type")
       } else {
-      # alternative set if it is not at NI lake
-        left_cols <- c("wbid", "Name", "Grid_reference", "Easting", "Northing", "Elevation_type", "Size_type", "Depth_type", "Geology_type", "Humic_type")
+        # alternative set if output does not contain a NI lake
+        left_cols <- c("wbid", "Name", "Grid_reference", "Easting", "Northing",
+                       "Elevation_type", "Size_type", "Depth_type",
+                       "Geology_type", "Humic_type")
       }
     }
 
@@ -189,25 +194,21 @@ get_lake_info <- function(...) {
     # reorder the columns
     wide_table <- wide_table[, c(left_cols, right_cols)]
 
-    # convert data types, first numeric, leaving out E and N if NI lake
-    # this does not work as this goes through the whole vector!!!!!!!!!!!!!!!!!
-    ###########################################################################
     # if all lakes are in NI set (wbid > 50000)
-    if(min(wide_table$wbid)>50000){
-      #       wide_table[c("wbid", right_cols)] <- lapply(wide_table[c("wbid", right_cols)], as.numeric)
+    if (min(wide_table$wbid) > 50000) {
       wide_table[c(right_cols)] <- lapply(wide_table[c(right_cols)], as.numeric)
-    }
-    else {
-      wide_table[c("Easting", "Northing", right_cols)] <- lapply(wide_table[c("Easting", "Northing", right_cols)], as.numeric)
+    } else {
+      wide_table[c("Easting", "Northing", right_cols)] <-
+        lapply(wide_table[c("Easting", "Northing", right_cols)], as.numeric)
     }
     # then convert marl to a boolean if present
-    if ("Marl_water_body" %in% colnames(wide_table)){
-      wide_table$Marl_water_body<- as.logical(wide_table$Marl_water_body)
+    if ("Marl_water_body" %in% colnames(wide_table)) {
+      wide_table$Marl_water_body <- as.logical(wide_table$Marl_water_body)
       wide_table$Marl_water_body[is.na(wide_table$Marl_water_body)] <- FALSE
     }
 
     return(as.data.frame(wide_table))
   } else {
     stop("No valid lake wbids provided to function")
-  } # end of if there are any lakes
-} # end of function
+  }
+}

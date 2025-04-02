@@ -20,74 +20,78 @@ library(uklakes)
 
 ## Introduction 
 
-The [UK CEH Lake Portal](https://uklakes.ceh.ac.uk/) is a GIS-based inventory of information about more than 40000 lakes across the UK. The information available for each lake varies, but includes basic physical description, typology and other information.
+The [UK CEH Lake Portal](https://uklakes.ceh.ac.uk/) is a GIS-based inventory of
+information about more than 40000 lakes across the UK. The information available
+for each lake varies, but includes basic physical description, typology and 
+other information.
 
-The `uklakes` package allows you to retrieve a summary of the lake information for a lake or series of lakes, based on the lake wbid (waterbody id) number. It does this by responsibly webscraping the information [polite package](https://cran.r-project.org/package=polite)) from the webpage of each lake. You can also search for lake wbid values based on strings in the lake name to determine the wbids to search for.
+The `uklakes` package allows you to retrieve a summary of the lake information 
+for a lake or series of lakes, based on the lake wbid (waterbody id) number. 
+It does this by responsibly webscraping the information 
+[polite package](https://cran.r-project.org/package=polite)) from the webpage of
+each lake as the website does not provide an API or any easy way to extract the 
+data returned. You can also search for lake wbid values based on strings in the 
+lake name to determine the wbids to search for.
 
-Information on the general physical characteristics, typology, chemistry and connectivity metrics are retrieved. Biology, land cover and water quality information are not. For details of the information available, see the [UK Lakes Portal Website](https://uklakes.ceh.ac.uk/), or the [output reference list](../articles/uklakes_output_ref.html).
+Information on the general physical characteristics, typology, chemistry and 
+connectivity metrics are retrieved. Biology, land cover and water quality 
+information are not. For details of the information available, see the 
+[UK Lakes Portal Website](https://uklakes.ceh.ac.uk/), or the 
+[output reference list](../articles/uklakes_output_ref.html).
 
-Use of the package implies acceptance of the Terms of Use available [here](https://www.ceh.ac.uk/terms-of-use).
-
-## Installation
-
-You can install the current version of uklakes from [GitHub](https://github.com/) with:
-
-```{r, include = TRUE, eval=FALSE}
-# install.packages("pak")
-pak::pak("robbriers/uklakes")
-```
+Use of the package implies acceptance of the Terms of Use available 
+[here](https://www.ceh.ac.uk/terms-of-use).
 
 ## Functions
 
 ### Search for wbid numbers
 
-The `search_lakes` function allows you to search a listing of all the lakes within the portal, based on a string provided. It will return a dataframe containing the name and wbid number of all the lakes that contain (full or partial match, case sensitive) the string provided. Note that most of the lakes within the portal (particularly the small ones) do not have a name (76% of total).
+The `search_lake` function allows you to search a listing of all the lakes 
+within the portal, based on a string provided. It will return a dataframe 
+containing the name and wbid number of all the lakes that contain (full or 
+partial match, case sensitive) the string provided. Note that most of the lakes 
+within the portal (particularly the small ones) do not have a name 
+(76% of total).
 
 ```{r search examples, eval = TRUE}
 library(uklakes)
-all_tarns <- search_lakes("Tarn")
+all_tarns <- search_lake("Tarn")
 nrow(all_tarns)
 # 140 Tarns in the portal database
 
 # first six tarns in the list
 head(all_tarns)
 
-search_lakes("Leven")
+search_lake("Leven")
 # two Loch Levens and one Loch of Levenwick
 ```
 
-The wbid column of the dataframe returned can be used as input to the data retrieval function (see below for examples).
+The wbid column of the dataframe returned can be used as input to the data 
+retrieval function (see below for examples).
 
 ### Get a summary of information for a lake or lakes
 
-The `get_lake_info` function retrieves the available information for a lake or lakes, based on the wbid numbers provided.
+The `get_lake_info` function retrieves the available information for a lake or 
+lakes, based on the wbid numbers provided.
 
-Wbid numbers can be passed to the function as a single integer, a series of integer values, a sequence of values, a vector of values (either as a specific object or as a column of a dataframe) or a combination of these. See examples below.
+Wbid numbers can be passed to the function as a single integer, a series of 
+integer values, a sequence of values, a vector of values (either as a specific 
+object or as a column of a dataframe) or a combination of these. See examples 
+below.
 
-```{r get info examples, eval = FALSE}
 # Loch Lomond
+```{r get info examples, eval = TRUE}
 get_lake_info(24447)
 
 # some small lakes in Shetland
-get_lake_info(4, 6, 9)
+get_lake_info(4, 6, 1232:1234)
 
-# a series of small lakes in Shetland
-get_lake_info(1232:1238)
-
-# the first 5 Tarns in the database
-#tarns <- search_lakes("Tarn")
-five_tarns <- get_lake_info(all_tarns$wbid[1:5])
+# the first 5 lakes containing 'Tarn' in the database
+all_tarns <- search_lake("Tarn")
+get_lake_info(all_tarns$wbid[1:5])
 ```
 
-The range of information provided varies widely between lakes. Basic physical description and typology information are always returned. For a full listing of the possible columns see the *output reference* listing.
-
-```{r, prep output, echo=FALSE, eval=TRUE, message=FALSE}
-five_tarns <- get_lake_info(all_tarns$wbid[1:5])
-```
-
-
-```{r, example output, eval=TRUE}
-# information from the first 5 Tarns in the database
-#tarns <- search_lakes("Tarn")
-five_tarns
-```
+The range of information provided varies widely between lakes. Basic physical 
+description and typology information are always returned. For a full listing of 
+the possible columns see the 
+[output reference](../articles/uklakes_output_ref.html) listing.

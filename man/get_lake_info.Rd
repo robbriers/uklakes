@@ -22,8 +22,9 @@ For details of the information provided, see the UK CEH Lake Portal website
 }
 \description{
 Produces a summary of available information about a lake or
-lakes from the UK CEH Lakes Portal \url{https://uklakes.ceh.ac.uk/} by
-responsibly webscraping lake information pages.
+lakes from the UK CEH Lakes Portal
+\url{https://uklakes.ceh.ac.uk/} by responsibly
+webscraping lake information pages.
 }
 \examples{
 \dontrun{
@@ -34,7 +35,7 @@ get_lake_info(24447, 24531)
 get_lake_info(4, 5, 6, 34:37)
 
 # can also pass in the wbid column from the output of search_lakes
-tarn_list <- search_lakes("Tarn")
+tarn_list <- search_lake("Tarn")
 # just retrieve the first 5 lakes
 get_lake_info(tarn_list$wbid[1:5])
 }
