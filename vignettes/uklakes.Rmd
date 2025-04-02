@@ -79,10 +79,7 @@ integer values, a sequence of values, a vector of values (either as a specific
 object or as a column of a dataframe) or a combination of these. See examples 
 below.
 
-# Loch Lomond
 ```{r get info examples, eval = TRUE}
-get_lake_info(24447)
-
 # some small lakes in Shetland
 get_lake_info(4, 6, 1232:1234)
 
