@@ -71,9 +71,9 @@
 
     
     
-<div class="section level3">
-<h3 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h3>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
 <p>The <a href="https://uklakes.ceh.ac.uk/" class="external-link">UK CEH Lake Portal</a> is a
 GIS-based inventory of information about more than 40000 lakes across
 the UK. The information available for each lake varies, but includes
@@ -95,12 +95,12 @@ reference list</a>.</p>
 <p>Use of the package implies acceptance of the Terms of Use available
 <a href="https://www.ceh.ac.uk/terms-of-use" class="external-link">here</a>.</p>
 </div>
+<div class="section level2">
+<h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
+</h2>
 <div class="section level3">
-<h3 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
+<h3 id="search-for-wbid-numbers">Search for wbid numbers<a class="anchor" aria-label="anchor" href="#search-for-wbid-numbers"></a>
 </h3>
-<div class="section level4">
-<h4 id="search-for-wbid-numbers">Search for wbid numbers<a class="anchor" aria-label="anchor" href="#search-for-wbid-numbers"></a>
-</h4>
 <p>The <code>search_lake</code> function allows you to search a listing
 of all the lakes within the portal, based on a string provided. It will
 return a dataframe containing the name and wbid number of all the lakes
@@ -133,45 +133,17 @@ the small ones) do not have a name (76% of total).</p>
 <p>The wbid column of the dataframe returned can be used as input to the
 data retrieval function (see below for examples).</p>
 </div>
-<div class="section level4">
-<h4 id="get-a-summary-of-information-for-a-lake-or-lakes">Get a summary of information for a lake or lakes<a class="anchor" aria-label="anchor" href="#get-a-summary-of-information-for-a-lake-or-lakes"></a>
-</h4>
+<div class="section level3">
+<h3 id="get-a-summary-of-information-for-a-lake-or-lakes">Get a summary of information for a lake or lakes<a class="anchor" aria-label="anchor" href="#get-a-summary-of-information-for-a-lake-or-lakes"></a>
+</h3>
 <p>The <code>get_lake_info</code> function retrieves the available
 information for a lake or lakes, based on the wbid numbers provided.</p>
 <p>Wbid numbers can be passed to the function as a single integer, a
 series of integer values, a sequence of values, a vector of values
 (either as a specific object or as a column of a dataframe) or a
 combination of these. See examples below.</p>
-</div>
-</div>
-<div class="section level2">
-<h2 id="loch-lomond">Loch Lomond<a class="anchor" aria-label="anchor" href="#loch-lomond"></a>
-</h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_lake_info.html">get_lake_info</a></span><span class="op">(</span><span class="fl">24447</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Scraping lake wbid 24447</span></span>
-<span><span class="co">#&gt;    wbid        Name Grid_reference Easting Northing Elevation_type Size_type</span></span>
-<span><span class="co">#&gt; 1 24447 Loch Lomond     NS37049448  237040   694480  Low elevation     Large</span></span>
-<span><span class="co">#&gt;   Depth_type   Geology_type            Humic_type Surface_area Mean_depth</span></span>
-<span><span class="co">#&gt; 1       Deep Low alkalinity Unavailable (no data)         7073         37</span></span>
-<span><span class="co">#&gt;   Maximum_depth Catchment_area Elevation Perimeter_length</span></span>
-<span><span class="co">#&gt; 1         189.9          76321         4              139</span></span>
-<span><span class="co">#&gt;   Shoreline_development_index Fetch_distance Distance_to_sea Water_body_volume</span></span>
-<span><span class="co">#&gt; 1                        4.66          14.25            2.26        2617021840</span></span>
-<span><span class="co">#&gt;   Catchment-to-lake_ratio Catchment_mean_elevation Catchment_mean_slope</span></span>
-<span><span class="co">#&gt; 1                    10.8                   242.77                10.14</span></span>
-<span><span class="co">#&gt;   Catchment_lake_area Catchment_pond_area Catchment_strahler_1_length</span></span>
-<span><span class="co">#&gt; 1               10.97                0.02                     1030784</span></span>
-<span><span class="co">#&gt;   Catchment_strahler_2_length Catchment_strahler_3_length</span></span>
-<span><span class="co">#&gt; 1                    283334.5                    149697.2</span></span>
-<span><span class="co">#&gt;   Catchment_strahler_4_plus_length Catchment_obstacles_count</span></span>
-<span><span class="co">#&gt; 1                         170280.1                        45</span></span>
-<span><span class="co">#&gt;   2km_buffer_river_length 2km_buffer_lakes_perimeter 2km_buffer_ponds_perimeter</span></span>
-<span><span class="co">#&gt; 1                393652.6                    7812.88                    3986.74</span></span>
-<span><span class="co">#&gt;   Mean_alkalinity Mean_conductivity</span></span>
-<span><span class="co">#&gt; 1             194                53</span></span>
-<span></span>
-<span><span class="co"># some small lakes in Shetland</span></span>
+<code class="sourceCode R"><span><span class="co"># some small lakes in Shetland</span></span>
 <span><span class="fu"><a href="../reference/get_lake_info.html">get_lake_info</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">6</span>, <span class="fl">1232</span><span class="op">:</span><span class="fl">1234</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Scraping lake wbid 4</span></span>
 <span><span class="co">#&gt; Scraping lake wbid 6</span></span>
@@ -293,6 +265,7 @@ combination of these. See examples below.</p>
 physical description and typology information are always returned. For a
 full listing of the possible columns see the <a href="../articles/uklakes_output_ref.html">output reference</a>
 listing.</p>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
