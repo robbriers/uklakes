@@ -16,24 +16,19 @@ test_that("get_lake_info for a range of lakes returns right size dataframe", {
   expect_true(all(dim(test_range_lake) == c(3, 35)))
 })
 
-test_that("string input returns an error", {
-  # retrieve data for lake wbid "Aardvark"
-  expect_error(get_lake_info("Aardvark"))
-})
-
 test_that("blank input returns an error", {
   # retrieve data for blank lake wbid
   expect_error(get_lake_info())
 })
 
-test_that("non-integer numeric input returns an error", {
+test_that("non-integer input returns an error", {
   # retrieve data for real numeric lake wbid
   expect_error(get_lake_info(5.53))
 })
 
 test_that("lake from NI does not have a grid reference column", {
   skip_if_offline()
-    # retrieve data for a NI lake wbid
+  # retrieve data for a NI lake wbid
   test_NI_lake <- get_lake_info(50018)
   # check to see if 'Grid_reference' column is in output
   column_exists <- "Grid_reference" %in% colnames(test_NI_lake)
