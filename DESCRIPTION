@@ -1,6 +1,6 @@
 Package: uklakes
 Title: Retrieves Lake Information from UK CEH Lakes Portal
-Version: 0.2.0
+Version: 0.2.0.9000
 Authors@R: person("Rob", "Briers", email = "r.briers@napier.ac.uk",
   role = c("aut", "cre"), comment = c(ORCID = "0000-0003-0341-1203"))
 Description: Retrieves a summary of the lake information from the UK CEH Lake 
@@ -15,6 +15,7 @@ RoxygenNote: 7.3.2
 Depends: 
     R (>= 3.5)
 Imports: 
+    curl,
     polite,
     rnrfa,
     rvest,

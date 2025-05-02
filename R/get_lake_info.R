@@ -35,6 +35,12 @@
 #' }
 #'
 get_lake_info <- function(...) {
+
+  # before doing anything, check can access internet
+  if (is.null(curl::nslookup("uklakes.ceh.ac.uk"))){
+    stop("Unable to connect to UK lakes website")
+  }
+
   # capture arguments as a list
   lakelist <- list(...)
 
@@ -115,11 +121,6 @@ get_lake_info <- function(...) {
 
         # now add typology info back on
         combined_tables <- do.call(rbind, list(combined_tables, typology))
-
-        # remove extra columns if biology table is present
-        if (ncol(combined_tables) > 2) {
-          combined_tables <- combined_tables[1:2]
-        }
 
         # remove trailing [?] parts from values
         combined_tables$X1 <- sub("\\[.*", "", combined_tables$X1)

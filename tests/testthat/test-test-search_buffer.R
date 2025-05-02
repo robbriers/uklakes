@@ -15,3 +15,8 @@ test_that("coordinates outside BNG range returns an error", {
   # search for sites containing "Aardvark"1300000
   expect_error(search_buffer(335792, 1300001, 2000))
 })
+
+test_that("non-numeric buffer distance returns an error", {
+  # search for sites containing "Aardvark"
+  expect_error(search_buffer(335792, 501379, "Aardvark"))
+})
