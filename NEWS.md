@@ -1,6 +1,8 @@
-# uklakes (development version)
+# uklakes 0.2.0
 
-* Updating various things following initial rOpenSci feedback.
+* Adding in `search_buffer` function to allow search for lakes within given distance from a point.
+
+* Adding in Country (England, Wales, Scotland) to output from search_* functions
 
 * BREAKING CHANGE: `search_lakes` renamed to `search_lake`
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/search_buffer.R
 \name{search_buffer}
 \alias{search_buffer}
-\title{Search database of for lakes within a set buffer distance of a point}
+\title{Search database for lakes within a set buffer distance of a point}
 \usage{
 search_buffer(xcoord, ycoord, buffer_distance)
 }
@@ -18,12 +18,13 @@ the point in metres.}
 }
 \value{
 A data frame containing the details (Name, wbid, Country) of all
-the lakes that are within the specified buffer distance of the point as well
-as the distance (in metres) from each lake to the point.
+the lakes that have their centroid within the specified buffer distance of
+the point as well as the distance (in metres) from each lake to the point.
 }
 \description{
 Searches the listing of UK CEH Lakes Portal lake sites to find
-lakes that are within a specified buffer distance from the point given.
+lakes that have their centroid within a specified buffer distance from the
+point given.
 
 Coordinates are specified as British National Grid X and Y and are checked
 to ensure that they are within the required ranges.

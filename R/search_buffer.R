@@ -1,6 +1,7 @@
-#' Search database of for lakes within a set buffer distance of a point
+#' Search database for lakes within a set buffer distance of a point
 #' @description Searches the listing of UK CEH Lakes Portal lake sites to find
-#' lakes that are within a specified buffer distance from the point given.
+#' lakes that have their centroid within a specified buffer distance from the
+#'  point given.
 #'
 #' Coordinates are specified as British National Grid X and Y and are checked
 #' to ensure that they are within the required ranges.
@@ -15,8 +16,8 @@
 #' the point in metres.
 #'
 #' @return A data frame containing the details (Name, wbid, Country) of all
-#' the lakes that are within the specified buffer distance of the point as well
-#' as the distance (in metres) from each lake to the point.
+#' the lakes that have their centroid within the specified buffer distance of
+#' the point as well as the distance (in metres) from each lake to the point.
 #'
 #' @export search_buffer
 #'
@@ -47,6 +48,9 @@ search_buffer <- function(xcoord, ycoord, buffer_distance){
 
   # Filter rows within the buffer distance
   result <- lake_ids[distances <= buffer_distance, ]
+
+  # add on actual distances
+  result$Distance <- distances[distances <= buffer_distance]
 
   # remove NI lakes (no Easting or Northings)
   result <- result[!is.na(result$Easting), ]
