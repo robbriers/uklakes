@@ -38,7 +38,8 @@ get_lake_info <- function(...) {
 
   # before doing anything, check can access internet
   if (is.null(curl::nslookup("uklakes.ceh.ac.uk"))){
-    stop("Unable to connect to UK lakes website")
+    message("Unable to connect to UK lakes website")
+    return(NULL)
   }
 
   # capture arguments as a list
